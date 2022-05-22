@@ -1,5 +1,13 @@
+import Main from "./components/Main";
+import Footer from "./components/Footer";
+
 function App() {
-  return <div>ContactBook App</div>;
+  return (
+    <>
+      <Main />
+      <Footer />
+    </>
+  );
 }
 
 export default App;
