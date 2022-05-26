@@ -1,13 +1,15 @@
 import React from "react";
 import styled from "styled-components";
+import ListContacts from "./ListContacts";
+import ListContactsAmount from "./ListContactsAmount";
 
 const List = () => {
   return (
     <StyledContainer>
-      <ul className="list__contacts"></ul>
-      <section className="list__contacts-amount no-select">
-        <p>Contacts: 0</p>
-      </section>
+      <ul className="list__contacts">
+        <ListContacts />
+      </ul>
+      <ListContactsAmount />
     </StyledContainer>
   );
 };

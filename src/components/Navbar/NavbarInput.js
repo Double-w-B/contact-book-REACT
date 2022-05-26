@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import styled from "styled-components";
 
 const NavbarInput = () => {
@@ -8,16 +8,16 @@ const NavbarInput = () => {
         type="text"
         id="search"
         placeholder="Type to search ..."
-        onfocus="this.placeholder=''"
-        onblur="this.placeholder='Type to search ...'"
-        autocomplete="off"
+        onFocus={(e) => (e.target.placeholder = "")}
+        onBlur={(e) => (e.target.placeholder = "Type to search ...")}
+        autoComplete="off"
       />
       <div className="input__search-icon">
         <i className="fas fa-search"></i>
       </div>
     </InputContainer>
   );
-}
+};
 
 const InputContainer = styled.div`
   width: 40%;
@@ -71,4 +71,4 @@ const InputContainer = styled.div`
   }
 `;
 
-export default NavbarInput
+export default NavbarInput;

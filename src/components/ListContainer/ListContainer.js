@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import List from "./List";
+import List from "./List/List";
+import Menu from "./Menu/Menu";
 import LettersContainer from "./LettersContainer";
-import Menu from "./Menu";
 
 const ListContainer = () => {
   return (

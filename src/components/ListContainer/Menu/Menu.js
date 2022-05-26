@@ -1,11 +1,14 @@
-import React from 'react'
+import React from "react";
 import styled from "styled-components";
+import MenuButtons from "./MenuButtons";
 
 const Menu = () => {
   return (
-    <StyledContainer>Menu</StyledContainer>
-  )
-}
+    <StyledContainer /* className="show-menu" */>
+      <MenuButtons />
+    </StyledContainer>
+  );
+};
 
 const StyledContainer = styled.section`
   height: 7.5rem;
@@ -23,6 +26,14 @@ const StyledContainer = styled.section`
   background-color: var(--blue-primary);
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   position: absolute;
+
+  
+
+  &.show-menu {
+    opacity: 1;
+    transform: translateY(0);
+    z-index: 1;
+  }
 `;
 
-export default Menu
+export default Menu;
