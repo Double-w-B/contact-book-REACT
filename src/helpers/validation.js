@@ -1,0 +1,81 @@
+/* Invalid data validation */
+const invalidItem = (elm) => {
+  elm.current.classList.add("invalid-input");
+  elm.current.nextElementSibling.classList.add("invalid-input");
+
+setTimeout(() => {
+    elm.current?.classList.remove("invalid-input");
+    elm.current?.nextElementSibling.classList.remove("invalid-input");
+  }, 1500);
+};
+
+/* Required data validation */
+const requiredInput = (elm) => {
+  elm.current.classList.add("invalid-input");
+  elm.current.nextElementSibling.nextElementSibling.classList.add(
+    "invalid-input"
+  );
+
+  setTimeout(() => {
+    elm.current?.classList.remove("invalid-input");
+    elm.current?.nextElementSibling.nextElementSibling.classList.remove(
+      "invalid-input"
+    );
+  }, 1500);
+};
+
+/* Same number validation */
+const unavailableNumber = (elm) => {
+  elm.current.classList.add("invalid-input");
+  elm.current.nextElementSibling.nextElementSibling.nextElementSibling.classList.add(
+    "invalid-input"
+  );
+
+setTimeout(() => {
+    elm.current?.classList.remove("invalid-input");
+    elm.current?.nextElementSibling.nextElementSibling.nextElementSibling.classList.remove(
+      "invalid-input"
+    );
+  }, 1500);
+};
+
+export const validationFunction = (
+  inputName,
+  inputSurname,
+  inputPhone,
+  inputEmail,
+  checkNumber,
+  textRegExp,
+  emailRegExp
+) => {
+  /* Required data validation */
+  !inputName.current.value && requiredInput(inputName);
+  !inputSurname.current.value && requiredInput(inputSurname);
+  !inputPhone.current.value && requiredInput(inputPhone);
+
+  /* Invalid data validation */
+
+  inputName.current.value.match(textRegExp) && invalidItem(inputName);
+  inputSurname.current.value.match(textRegExp) && invalidItem(inputSurname);
+
+  inputPhone.current.value &&
+    !inputPhone.current.value.match(/^[0-9]+$/) &&
+    invalidItem(inputPhone);
+
+  inputEmail.current.value &&
+    !inputEmail.current.value.match(emailRegExp) &&
+    invalidItem(inputEmail);
+
+  /* Same number validation */
+
+  if (
+    inputName.current.value &&
+    inputSurname.current.value &&
+    !inputName.current.value.match(textRegExp) &&
+    !inputSurname.current.value.match(textRegExp) &&
+    (!inputEmail.current.value || inputEmail.current.value.match(emailRegExp))
+  ) {
+    checkNumber.includes(inputPhone.current.value) &&
+      unavailableNumber(inputPhone);
+  }
+};

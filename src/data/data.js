@@ -26,3 +26,52 @@ export const alphabet = [
   "y",
   "z",
 ];
+
+export const topInputsOne = [
+  {
+    className: "name-input",
+    id: "name",
+    name: "name",
+    placeholder: "Name*",
+    method: "setName",
+  },
+  {
+    className: "surname-input",
+    id: "surname",
+    name: "surname",
+    placeholder: "Surname*",
+    method: "setSurname",
+  },
+];
+export const topInputsTwo = [
+  {
+    className: "phone-input",
+    id: "phone",
+    name: "phone",
+    placeholder: "Phone no.*",
+    method: "setPhone",
+  },
+  {
+    className: "email-input",
+    id: "email",
+    name: "email",
+    placeholder: "Email",
+    method: "setEmail",
+  },
+];
+export const bottomInputs = [
+  {
+    className: "address-input",
+    id: "address",
+    name: "address",
+    placeholder: "Address",
+    method: "setAddress",
+  },
+  {
+    className: "notes-input",
+    id: "notes",
+    name: "notes",
+    placeholder: "Notes",
+    method: "setNotes",
+  },
+];

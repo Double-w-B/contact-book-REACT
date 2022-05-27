@@ -1,10 +1,13 @@
 import React from "react";
 import styled from "styled-components";
 import MenuButtons from "./MenuButtons";
+import { useSelector } from "react-redux";
 
 const Menu = () => {
+  const { isMenuOpen } = useSelector((store) => store.menu);
+
   return (
-    <StyledContainer /* className="show-menu" */>
+    <StyledContainer className={isMenuOpen ? "show-menu" : undefined}>
       <MenuButtons />
     </StyledContainer>
   );
@@ -26,8 +29,6 @@ const StyledContainer = styled.section`
   background-color: var(--blue-primary);
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   position: absolute;
-
-  
 
   &.show-menu {
     opacity: 1;

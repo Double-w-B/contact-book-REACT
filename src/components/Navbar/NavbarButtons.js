@@ -1,10 +1,27 @@
 import React from "react";
 import styled from "styled-components";
+import { useDispatch, useSelector } from "react-redux";
+import { handleMenuBtn } from "../../features/menu/menuSlice";
+import {
+  handleModalOverlay,
+  handleAddEditContactModal,
+  showAddContact,
+} from "../../features/modal/modalSlice";
 
 const NavbarButtons = () => {
+  const dispatch = useDispatch();
+  const { isMenuOpen } = useSelector((store) => store.menu);
+
   return (
     <>
-      <Button className="nav__btn--add no-select">
+      <Button
+        className="nav__btn--add no-select"
+        onClick={() => {
+          dispatch(handleModalOverlay(true));
+          dispatch(handleAddEditContactModal(true));
+          dispatch(showAddContact(true));
+        }}
+      >
         <i className="fas fa-user-plus"></i>
         <p>Add</p>
         <p>New</p>
@@ -14,12 +31,16 @@ const NavbarButtons = () => {
         <p>List</p>
       </Button>
 
-      <Button className="nav__btn--menu no-select">
+      <Button
+        className="nav__btn--menu no-select"
+        onClick={() => dispatch(handleMenuBtn(!isMenuOpen))}
+      >
         <i className="fas fa-bars"></i>
       </Button>
     </>
   );
 };
+
 const Button = styled.button`
   height: 65%;
   border: none;
@@ -37,14 +58,20 @@ const Button = styled.button`
   color: var(--blue-primary);
   box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
 
+  &:active {
+    -webkit-box-shadow: inset 1px 2px 2px #535557;
+    -moz-box-shadow: inset 1px 2px 2px #535557;
+    box-shadow: inset 1px 2px 2px #535557;
+  }
+
   * {
     margin: 0;
     padding: 0;
     font-weight: bold;
   }
 
-  & .fa-address-book,
-  & .fa-user-plus {
+  .fa-address-book,
+  .fa-user-plus {
     margin-top: 0.1rem;
   }
 
