@@ -7,6 +7,7 @@ import {
   handleAddEditContactModal,
   showAddContact,
 } from "../../features/modal/modalSlice";
+import { hideActiveSubmenu } from "../../helpers/helpers";
 
 const NavbarButtons = () => {
   const dispatch = useDispatch();
@@ -33,7 +34,10 @@ const NavbarButtons = () => {
 
       <Button
         className="nav__btn--menu no-select"
-        onClick={() => dispatch(handleMenuBtn(!isMenuOpen))}
+        onClick={() => {
+          dispatch(handleMenuBtn(!isMenuOpen));
+          hideActiveSubmenu();
+        }}
       >
         <i className="fas fa-bars"></i>
       </Button>

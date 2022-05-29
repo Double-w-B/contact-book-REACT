@@ -2,22 +2,13 @@ import React from "react";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 import { alphabet } from "../../data/data";
+import { uniqueFilteredLetters } from "../../helpers/helpers";
 
 const LettersContainer = () => {
   const { contacts } = useSelector((store) => store.contacts);
 
-  const uniqueFilteredLetters = () => {
-    const filteredLetters = contacts.map((i) => {
-      let firstLetter = i.name.slice(0, 1);
-      return firstLetter;
-    });
-
-    const singleFilteredLetters = [...new Set(filteredLetters)];
-    return singleFilteredLetters;
-  };
-
   const letters = alphabet.map((letter) => {
-    if (uniqueFilteredLetters().includes(letter)) {
+    if (uniqueFilteredLetters(contacts).includes(letter)) {
       return (
         <div className="letters__letter no-select" key={letter}>
           <a href={`#${letter}`}>{letter}</a>
