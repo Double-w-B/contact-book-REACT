@@ -1,11 +1,9 @@
-import React from 'react'
+import React from "react";
 import styled from "styled-components";
 
 const ModalContactInfo = () => {
-  return (
-    <div>ModalContactInfo</div>
-  )
-}
+  return <div>ModalContactInfo</div>;
+};
 
 const StyledContainer = styled.article`
   background-color: var(--white-dark);
@@ -159,4 +157,4 @@ const StyledContainer = styled.article`
   }
 `;
 
-export default ModalContactInfo
+export default ModalContactInfo;

@@ -13,9 +13,13 @@ const contactsSlice = createSlice({
       state.contacts = [...currentState.contacts, action.payload];
       console.log(state.contacts);
     },
+    refreshContactsList: (state, action) => {
+      state.contacts = action.payload;
+      console.log(state.contacts);
+    },
   },
 });
 
-export const { addNewContact } = contactsSlice.actions;
+export const { addNewContact, refreshContactsList } = contactsSlice.actions;
 
 export default contactsSlice.reducer;

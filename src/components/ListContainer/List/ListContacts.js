@@ -1,12 +1,17 @@
 import React from "react";
 import styled from "styled-components";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import NoContactsInfo from "./NoContactsInfo";
 import { uniqueFilteredLetters } from "../../../helpers/helpers";
 import { alphabet } from "../../../data/data";
 import arrowIcon from "../../../assets/arrowDown.svg";
+import {
+  handleModalOverlay,
+  showDeleteContactModal,
+} from "../../../features/modal/modalSlice";
 
 const ListContacts = () => {
+  const dispatch = useDispatch();
   const { contacts } = useSelector((store) => store.contacts);
 
   if (contacts.length < 1) {
@@ -64,7 +69,15 @@ const ListContacts = () => {
                           <a href={`mailto:${mail}`}>
                             <button className="sendEm">Send email</button>
                           </a>
-                          <button className="deleteCon">Delete</button>
+                          <button
+                            className="deleteCon"
+                            onClick={() => {
+                              dispatch(handleModalOverlay(true));
+                              dispatch(showDeleteContactModal([true, phone]));
+                            }}
+                          >
+                            Delete
+                          </button>
                         </div>
                       </StyledLiContact>
                     );
