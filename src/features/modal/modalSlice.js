@@ -2,11 +2,11 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   isModalOverlayOpen: false,
-  isAddEditContactModalOpen: false,
-  isAddContact: false,
-  isEditContact: false,
+  isShowAddContactModal: false,
+  isShowEditContactModal: false,
   isDeleteContactModal: false,
-  removeContactId: null,
+  isShowContactInfoModal: false,
+  selectedContactId: null,
 };
 
 const modalSLice = createSlice({
@@ -19,15 +19,20 @@ const modalSLice = createSlice({
     handleAddEditContactModal: (state, action) => {
       state.isAddEditContactModalOpen = action.payload;
     },
-    showAddContact: (state, action) => {
-      state.isAddContact = action.payload;
+    showAddContactModal: (state, action) => {
+      state.isShowAddContactModal = action.payload;
     },
-    showEditContact: (state, action) => {
-      state.isEditContact = action.payload;
+    showEditContactModal: (state, action) => {
+      state.isShowEditContactModal = action.payload[0];
+      if (action.payload[1]) state.selectedContactId = action.payload[1];
     },
     showDeleteContactModal: (state, action) => {
       state.isDeleteContactModal = action.payload[0];
-      state.removeContactId = action.payload[1];
+      if (action.payload[1]) state.selectedContactId = action.payload[1];
+    },
+    showContactInfoModal: (state, action) => {
+      state.isShowContactInfoModal = action.payload[0];
+      if (action.payload[1]) state.selectedContactId = action.payload[1];
     },
   },
 });
@@ -35,9 +40,10 @@ const modalSLice = createSlice({
 export const {
   handleModalOverlay,
   handleAddEditContactModal,
-  showAddContact,
-  showEditContact,
+  showAddContactModal,
+  showEditContactModal,
   showDeleteContactModal,
+  showContactInfoModal,
 } = modalSLice.actions;
 
 export default modalSLice.reducer;

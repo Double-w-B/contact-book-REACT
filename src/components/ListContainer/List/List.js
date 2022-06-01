@@ -1,9 +1,11 @@
 import React from "react";
 import styled from "styled-components";
-import ListContacts from "./ListContacts";
+import ListContacts from "./ListContacts/ListContacts";
 import ListContactsAmount from "./ListContactsAmount";
-import { handleClickOnList } from "../../../helpers/helpers";
-import { handleMouseOverList } from "../../../helpers/helpers";
+import {
+  handleClickOnList,
+  handleMouseOverList,
+} from "../../../helpers/helpers";
 import { handleMenuBtn } from "../../../features/menu/menuSlice";
 import { useDispatch } from "react-redux";
 

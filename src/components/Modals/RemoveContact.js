@@ -8,12 +8,12 @@ import { refreshContactsList } from "../../features/contacts/contactsSlice";
 const RemoveContact = () => {
   const dispatch = useDispatch();
 
-  const { removeContactId } = useSelector((store) => store.modal);
+  const { selectedContactId } = useSelector((store) => store.modal);
   const { contacts } = useSelector((store) => store.contacts);
 
   const removeContactFromList = () => {
     const newContactsList = contacts.filter(
-      (contact) => contact.phone !== removeContactId
+      (contact) => contact.phone !== selectedContactId
     );
     dispatch(handleModalOverlay(false));
     dispatch(showDeleteContactModal([false, null]));
@@ -22,13 +22,13 @@ const RemoveContact = () => {
 
   const findContactFromList = () => {
     const { name, surname } = contacts.find(
-      (person) => person.phone === removeContactId
+      (person) => person.phone === selectedContactId
     );
     return `${name} ${surname}`;
   };
 
   return (
-    <StyledContainer /* classNAme="modal__contact-delete" */>
+    <StyledContainer>
       <div className="confirm-container  no-select">
         <div className="confirm-question">
           <p>

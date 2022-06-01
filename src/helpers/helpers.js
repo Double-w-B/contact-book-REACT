@@ -4,7 +4,10 @@ export const uniqueFilteredLetters = (contacts) => {
     return firstLetter;
   });
 
-  const singleFilteredLetters = [...new Set(filteredLetters)];
+  const singleFilteredLetters = [...new Set(filteredLetters)].sort(
+    (a, b) => a > b
+  );
+
   return singleFilteredLetters;
 };
 

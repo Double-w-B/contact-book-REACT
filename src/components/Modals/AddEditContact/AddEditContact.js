@@ -1,13 +1,23 @@
 import React, { useState, useRef } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-import { showAddContact } from "../../features/modal/modalSlice";
-import { addNewContact } from "../../features/contacts/contactsSlice";
-import { handleModalOverlay } from "../../features/modal/modalSlice";
-import { topInputsOne, topInputsTwo, bottomInputs } from "../../data/data";
-import { validationFunction } from "../../helpers/validation";
+import {
+  showAddContactModal,
+  showEditContactModal,
+  handleModalOverlay,
+  showDeleteContactModal,
+} from "../../../features/modal/modalSlice";
+import {
+  addNewContact,
+  refreshContactsList,
+} from "../../../features/contacts/contactsSlice";
+import { validationFunction } from "../../../helpers/validation";
+import NameAndSurnameInput from "./NameAndSurnameInput";
+import PhoneAndEmailInput from "./PhoneAndEmailInput";
+import AddressAndNotesInput from "./AddressAndNotesInput";
+import AddAndEditButtons from "./AddAndEditButtons";
 
-const AddContact = () => {
+const AddEditContact = () => {
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
   const [phone, setPhone] = useState("");
@@ -24,10 +34,27 @@ const AddContact = () => {
 
   const dispatch = useDispatch();
 
-  const { isAddEditContactModalOpen } = useSelector((store) => store.modal);
+  const { isShowAddContactModal, isShowEditContactModal, selectedContactId } =
+    useSelector((store) => store.modal);
   const { contacts } = useSelector((store) => store.contacts);
 
-  const handleAddBtn = () => {
+  React.useEffect(() => {
+    console.log(isShowEditContactModal);
+    if (isShowEditContactModal) {
+      const foundContact = contacts.find(
+        (contact) => contact.phone === selectedContactId
+      );
+
+      setName(foundContact.name);
+      setSurname(foundContact.surname);
+      setPhone(foundContact.phone);
+      setEmail(foundContact.mail);
+      setAddress(foundContact.address);
+      setNotes(foundContact.notes);
+    }
+  }, []);
+
+  const handleAddBtn = (modalName) => {
     const textRegExp = /[ĄĆĘÓŚŻŹŁŃŚąćęóśżźłńś^0-9^а-я]/;
     const emailRegExp = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
     const checkNumber = contacts.map((person) => person.phone);
@@ -42,148 +69,122 @@ const AddContact = () => {
       emailRegExp
     );
 
-    if (
-      nameInput.current.value &&
-      surnameInput.current.value &&
-      !nameInput.current.value.match(textRegExp) &&
-      !surnameInput.current.value.match(textRegExp) &&
-      phoneInput.current.value.match(/^[0-9]+$/) &&
-      !checkNumber.includes(phoneInput.current.value) &&
-      (!emailInput.current.value || emailInput.current.value.match(emailRegExp))
-    ) {
-      dispatch(
-        addNewContact({
-          name: name.toLowerCase(),
-          surname: surname.toLowerCase(),
-          phone,
-          mail: email.toLowerCase(),
-          address: address.toLowerCase(),
-          notes: notes.toLowerCase(),
-        })
-      );
-      dispatch(showAddContact(false));
-      dispatch(handleModalOverlay(false));
+    if (modalName === "AddContact") {
+      if (
+        nameInput.current.value &&
+        surnameInput.current.value &&
+        !nameInput.current.value.match(textRegExp) &&
+        !surnameInput.current.value.match(textRegExp) &&
+        phoneInput.current.value.match(/^[0-9]+$/) &&
+        !checkNumber.includes(phoneInput.current.value) &&
+        (!emailInput.current.value ||
+          emailInput.current.value.match(emailRegExp))
+      ) {
+        dispatch(
+          addNewContact({
+            name: name.toLowerCase(),
+            surname: surname.toLowerCase(),
+            phone,
+            mail: email.toLowerCase(),
+            address: address.toLowerCase(),
+            notes: notes.toLowerCase(),
+          })
+        );
+        dispatch(showAddContactModal(false));
+        dispatch(handleModalOverlay(false));
+      } else {
+        return;
+      }
     } else {
-      return;
+      if (
+        nameInput.current.value &&
+        surnameInput.current.value &&
+        !nameInput.current.value.match(textRegExp) &&
+        !surnameInput.current.value.match(textRegExp) &&
+        phoneInput.current.value.match(/^[0-9]+$/) &&
+        (!emailInput.current.value ||
+          emailInput.current.value.match(emailRegExp)) &&
+        ((checkNumber.includes(phoneInput.current.value) &&
+          phoneInput.current.value === selectedContactId) ||
+          (!checkNumber.includes(phoneInput.current.value) &&
+            phoneInput.current.value !== selectedContactId))
+      ) {
+        const newContactsList = contacts.filter(
+          (contact) => contact.phone !== selectedContactId
+        );
+        dispatch(refreshContactsList(newContactsList));
+        dispatch(
+          addNewContact({
+            name: name.toLowerCase(),
+            surname: surname.toLowerCase(),
+            phone,
+            mail: email.toLowerCase(),
+            address: address.toLowerCase(),
+            notes: notes.toLowerCase(),
+          })
+        );
+        dispatch(handleModalOverlay(false));
+        dispatch(showEditContactModal(false));
+        dispatch(showDeleteContactModal([false, phone]));
+      } else {
+        return;
+      }
     }
   };
 
   const handleCancelBtn = () => {
-    dispatch(showAddContact(false));
+    dispatch(showEditContactModal(false));
+    dispatch(showAddContactModal(false));
     dispatch(handleModalOverlay(false));
   };
 
   return (
-    <StyledContainer
-      className={isAddEditContactModalOpen ? "open-modal" : undefined}
-    >
+    <StyledContainer>
       <div className="new-con-main-info">
-        <div className="info">New Contact</div>
+        <div className="info">
+          {isShowAddContactModal ? "New Contact" : "Edit Contact"}
+        </div>
         <form>
-          <div className="info-one">
-            {topInputsOne.map((input) => {
-              return (
-                <div className={input.className} key={input.id}>
-                  <input
-                    ref={input.name === "name" ? nameInput : surnameInput}
-                    type="text"
-                    id={input.id}
-                    name={input.name}
-                    placeholder={input.placeholder}
-                    value={input.name === "name" ? name : surname}
-                    onChange={(e) =>
-                      input.method === "setName"
-                        ? setName(e.target.value)
-                        : setSurname(e.target.value)
-                    }
-                    onFocus={(e) => (e.target.placeholder = "")}
-                    onBlur={(e) => (e.target.placeholder = input.placeholder)}
-                    required
-                  />
-                  <div className="error-hint">invalid {input.name}</div>
-                  <div className="error-hint-required">
-                    {input.name} is required
-                  </div>
-                </div>
-              );
-            })}
+          <div className="inputs_name-surname">
+            <NameAndSurnameInput
+              name={name}
+              surname={surname}
+              setName={setName}
+              setSurname={setSurname}
+              nameInput={nameInput}
+              surnameInput={surnameInput}
+            />
           </div>
-          <div className="info-two">
-            {topInputsTwo.map((input) => {
-              return (
-                <div className={input.className} key={input.id}>
-                  <input
-                    ref={input.name === "phone" ? phoneInput : emailInput}
-                    type={input.name === "phone" ? "text" : "email"}
-                    id={input.id}
-                    name={input.name}
-                    placeholder={input.placeholder}
-                    maxLength={input.name === "phone" ? 9 : 99}
-                    value={input.name === "phone" ? phone : email}
-                    onChange={(e) =>
-                      input.method === "setPhone"
-                        ? setPhone(e.target.value)
-                        : setEmail(e.target.value)
-                    }
-                    onFocus={(e) => (e.target.placeholder = "")}
-                    onBlur={(e) => (e.target.placeholder = input.placeholder)}
-                    required
-                  />
-                  <div className="error-hint">
-                    invalid {input.name === "phone" ? "number" : input.name}
-                  </div>
-                  {input.name === "phone" && (
-                    <>
-                      <div className="error-hint-required">
-                        number is required
-                      </div>
-                      <div className="error-hint-number">
-                        number already exists
-                      </div>
-                    </>
-                  )}
-                </div>
-              );
-            })}
+          <div className="inputs_phone-email">
+            <PhoneAndEmailInput
+              phone={phone}
+              email={email}
+              setPhone={setPhone}
+              setEmail={setEmail}
+              phoneInput={phoneInput}
+              emailInput={emailInput}
+            />
           </div>
         </form>
       </div>
 
       <div className="new-con-secondary-info">
         <form>
-          {bottomInputs.map((input) => {
-            return (
-              <div className={input.className} key={input.id}>
-                <input
-                  ref={input.name === "notes" ? notesInput : addressInput}
-                  type="text"
-                  id={input.name}
-                  name={input.name}
-                  maxLength="36"
-                  placeholder={input.placeholder}
-                  value={input.name === "notes" ? notes : address}
-                  onChange={(e) =>
-                    input.method === "setNotes"
-                      ? setNotes(e.target.value)
-                      : setAddress(e.target.value)
-                  }
-                  onFocus={(e) => (e.target.placeholder = "")}
-                  onBlur={(e) => (e.target.placeholder = input.placeholder)}
-                />
-              </div>
-            );
-          })}
+          <AddressAndNotesInput
+            address={address}
+            notes={notes}
+            setAddress={setAddress}
+            setNotes={setNotes}
+            addressInput={addressInput}
+            notesInput={notesInput}
+          />
         </form>
       </div>
-
-      <div className="new-con-btns">
-        <button className="accept" onClick={handleAddBtn}>
-          Add
-        </button>
-        <button className="cancel" onClick={handleCancelBtn}>
-          Cancel
-        </button>
-      </div>
+      <AddAndEditButtons
+        handleAddBtn={handleAddBtn}
+        handleCancelBtn={handleCancelBtn}
+        isShowAddContactModal={isShowAddContactModal}
+      />
     </StyledContainer>
   );
 };
@@ -195,8 +196,8 @@ const StyledContainer = styled.div`
   display: flex;
   flex-direction: column;
   position: absolute;
-  visibility: hidden;
-  z-index: -10;
+  visibility: visible;
+  z-index: 1;
   background-color: var(--white-dark);
   color: var(--grey-dark-secondary);
   box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px,
@@ -241,8 +242,8 @@ const StyledContainer = styled.div`
     justify-content: center;
   }
 
-  .info-one,
-  .info-two {
+  .inputs_name-surname,
+  .inputs_phone-email {
     width: 100%;
     height: 50%;
     display: flex;
@@ -391,4 +392,4 @@ const StyledContainer = styled.div`
   }
 `;
 
-export default AddContact;
+export default AddEditContact;

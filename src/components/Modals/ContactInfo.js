@@ -1,8 +1,62 @@
 import React from "react";
 import styled from "styled-components";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  handleModalOverlay,
+  showContactInfoModal,
+} from "../../features/modal/modalSlice";
 
-const ModalContactInfo = () => {
-  return <div>ModalContactInfo</div>;
+const ContactInfo = () => {
+  const dispatch = useDispatch();
+  const { contacts } = useSelector((store) => store.contacts);
+  const { selectedContactId } = useSelector((store) => store.modal);
+
+  const { name, surname, mail, address, notes, phone } = contacts.find(
+    (contact) => contact.phone === selectedContactId
+  );
+
+  return (
+    <StyledContainer>
+      <div className="btn-container">
+        <i
+          className="fas fa-times"
+          onClick={() => {
+            dispatch(showContactInfoModal(false));
+            dispatch(handleModalOverlay(false));
+          }}
+        ></i>
+      </div>
+      <div className="top-info">
+        <div className="photo no-select">
+          <div className="img">
+            {name.slice(0, 1)} {surname.slice(0, 1)}
+          </div>
+        </div>
+        <div className="main-info">
+          <p>{name}</p>
+          <p>{surname}</p>
+          <p>
+            <i className="fas fa-phone-alt no-select"></i>{" "}
+            {phone.replace(/(?!^)(?=(?:\d{3})+(?:\.|$))/gm, " ")}
+          </p>
+        </div>
+      </div>
+      <div className="bottom-info">
+        <p>
+          <i className="fas fa-at no-select"></i>
+          {mail ? mail : <span>no email address passed</span>}
+        </p>
+        <p>
+          <i className="fas fa-map-marker-alt no-select"></i>&nbsp;
+          {address ? address : <span>no address passed</span>}
+        </p>
+        <p>
+          <i className="far fa-edit no-select"></i>
+          {notes ? notes : <span>no notes passed</span>}
+        </p>
+      </div>
+    </StyledContainer>
+  );
 };
 
 const StyledContainer = styled.article`
@@ -13,8 +67,8 @@ const StyledContainer = styled.article`
   display: flex;
   flex-direction: column;
   position: absolute;
-  visibility: hidden;
-  z-index: -10;
+  visibility: visible;
+  z-index: 1;
   transition: cubic-bezier(0.17, 0.67, 0.83, 0.67);
   box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px,
     rgba(0, 0, 0, 0.22) 0px 15px 12px, inset 0 0 1px #48484a;
@@ -75,6 +129,11 @@ const StyledContainer = styled.article`
     font-weight: normal;
     text-transform: capitalize;
     color: var(--grey-semi-dark);
+
+    .fas {
+      font-size: 1.1rem;
+      transform: rotate(20deg) translateY(-0.1rem);
+    }
   }
 
   .top-info .main-info p:first-child {
@@ -82,6 +141,7 @@ const StyledContainer = styled.article`
   }
 
   .top-info .main-info p:last-child {
+    font-size: 1.7rem;
     color: var(--grey-dark-secondary);
     margin-bottom: 1rem;
   }
@@ -157,4 +217,4 @@ const StyledContainer = styled.article`
   }
 `;
 
-export default ModalContactInfo;
+export default ContactInfo;

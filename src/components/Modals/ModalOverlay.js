@@ -1,23 +1,24 @@
 import React from "react";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
-import AddContact from "./AddContact";
-import EditContact from "./EditContact";
+import AddContact from "./AddEditContact/AddEditContact";
 import RemoveContact from "./RemoveContact";
+import ContactInfo from "./ContactInfo";
 
 const ModalOverlay = () => {
   const {
     isModalOverlayOpen,
-    isAddContact,
-    isEditContact,
+    isShowAddContactModal,
+    isShowEditContactModal,
     isDeleteContactModal,
+    isShowContactInfoModal,
   } = useSelector((store) => store.modal);
 
   return (
     <StyledContainer className={isModalOverlayOpen ? "open-modal" : undefined}>
-      {isAddContact && <AddContact />}
-      {isEditContact && <EditContact />}
+      {(isShowAddContactModal || isShowEditContactModal) && <AddContact />}
       {isDeleteContactModal && <RemoveContact />}
+      {isShowContactInfoModal && <ContactInfo />}
     </StyledContainer>
   );
 };

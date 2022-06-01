@@ -11,10 +11,12 @@ const contactsSlice = createSlice({
     addNewContact: (state, action) => {
       const currentState = current(state);
       state.contacts = [...currentState.contacts, action.payload];
+      localStorage.setItem("contacts", JSON.stringify(state.contacts));
       console.log(state.contacts);
     },
     refreshContactsList: (state, action) => {
       state.contacts = action.payload;
+      localStorage.setItem("contacts", JSON.stringify(state.contacts));
       console.log(state.contacts);
     },
   },

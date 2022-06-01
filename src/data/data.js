@@ -27,7 +27,7 @@ export const alphabet = [
   "z",
 ];
 
-export const topInputsOne = [
+export const nameSurnameInputs = [
   {
     className: "name-input",
     id: "name",
@@ -43,7 +43,7 @@ export const topInputsOne = [
     method: "setSurname",
   },
 ];
-export const topInputsTwo = [
+export const phoneEmailInputs = [
   {
     className: "phone-input",
     id: "phone",
@@ -59,7 +59,7 @@ export const topInputsTwo = [
     method: "setEmail",
   },
 ];
-export const bottomInputs = [
+export const addressNotesInputs = [
   {
     className: "address-input",
     id: "address",

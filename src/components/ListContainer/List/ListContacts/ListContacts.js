@@ -1,17 +1,14 @@
 import React from "react";
 import styled from "styled-components";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
+import { alphabet } from "../../../../data/data";
+import { uniqueFilteredLetters } from "../../../../helpers/helpers";
+import arrowIcon from "../../../../assets/arrowDown.svg";
 import NoContactsInfo from "./NoContactsInfo";
-import { uniqueFilteredLetters } from "../../../helpers/helpers";
-import { alphabet } from "../../../data/data";
-import arrowIcon from "../../../assets/arrowDown.svg";
-import {
-  handleModalOverlay,
-  showDeleteContactModal,
-} from "../../../features/modal/modalSlice";
+import SubmenuBtns from "./SubmenuBtns";
+import ContactsInfo from "./ContactsInfo";
 
 const ListContacts = () => {
-  const dispatch = useDispatch();
   const { contacts } = useSelector((store) => store.contacts);
 
   if (contacts.length < 1) {
@@ -20,7 +17,7 @@ const ListContacts = () => {
 
   return (
     <>
-      {uniqueFilteredLetters(contacts).map((letter, index) => {
+      {uniqueFilteredLetters(contacts).map((letter) => {
         if (alphabet.includes(letter)) {
           return (
             <StyledLetterContainer
@@ -34,6 +31,7 @@ const ListContacts = () => {
               <ul className="contact-list">
                 {contacts
                   .filter((person) => person.name.slice(0, 1) === letter)
+                  .sort((a, b) => a.name > b.name)
                   .map((person) => {
                     const { phone, name, surname, mail } = person;
 
@@ -41,19 +39,15 @@ const ListContacts = () => {
                       <StyledLiContact key={phone} id={phone}>
                         <div className="contact-img no-select">
                           <i className="fas fa-check"></i>
-                          {name.slice(0, 1)} {surname.slice(0, 1)}
+                          {name.slice(0, 1)}
+                          {surname.slice(0, 1)}
                         </div>
                         <div className="contact">
-                          <p>
-                            {name} {surname}
-                          </p>
-                          <p>
-                            <i className="fas fa-phone-alt"></i>
-                            {phone.replace(
-                              /(?!^)(?=(?:\d{3})+(?:\.|$))/gm,
-                              " "
-                            )}
-                          </p>
+                          <ContactsInfo
+                            contactID={phone}
+                            name={name}
+                            surname={surname}
+                          />
                         </div>
                         <div className="submenu-icon">
                           <img
@@ -65,19 +59,7 @@ const ListContacts = () => {
                           />
                         </div>
                         <div className="submenu">
-                          <button className="editCon">Edit</button>
-                          <a href={`mailto:${mail}`}>
-                            <button className="sendEm">Send email</button>
-                          </a>
-                          <button
-                            className="deleteCon"
-                            onClick={() => {
-                              dispatch(handleModalOverlay(true));
-                              dispatch(showDeleteContactModal([true, phone]));
-                            }}
-                          >
-                            Delete
-                          </button>
+                          <SubmenuBtns contactID={phone} email={mail} />
                         </div>
                       </StyledLiContact>
                     );

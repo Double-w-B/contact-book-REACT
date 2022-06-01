@@ -5,7 +5,8 @@ import { handleMenuBtn } from "../../features/menu/menuSlice";
 import {
   handleModalOverlay,
   handleAddEditContactModal,
-  showAddContact,
+  showAddContactModal,
+  showEditContactModal,
 } from "../../features/modal/modalSlice";
 import { hideActiveSubmenu } from "../../helpers/helpers";
 
@@ -20,7 +21,8 @@ const NavbarButtons = () => {
         onClick={() => {
           dispatch(handleModalOverlay(true));
           dispatch(handleAddEditContactModal(true));
-          dispatch(showAddContact(true));
+          dispatch(showEditContactModal([false]));
+          dispatch(showAddContactModal(true));
         }}
       >
         <i className="fas fa-user-plus"></i>
