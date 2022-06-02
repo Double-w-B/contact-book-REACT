@@ -39,7 +39,6 @@ const AddEditContact = () => {
   const { contacts } = useSelector((store) => store.contacts);
 
   React.useEffect(() => {
-    console.log(isShowEditContactModal);
     if (isShowEditContactModal) {
       const foundContact = contacts.find(
         (contact) => contact.phone === selectedContactId

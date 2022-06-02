@@ -1,15 +1,37 @@
 import React from "react";
 import styled from "styled-components";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { alphabet } from "../../../../data/data";
 import { uniqueFilteredLetters } from "../../../../helpers/helpers";
 import arrowIcon from "../../../../assets/arrowDown.svg";
 import NoContactsInfo from "./NoContactsInfo";
 import SubmenuBtns from "./SubmenuBtns";
 import ContactsInfo from "./ContactsInfo";
+import {
+  addSelectedContactID,
+  refreshSelectedContactsID,
+} from "../../../../features/contacts/contactsSlice";
 
 const ListContacts = () => {
-  const { contacts } = useSelector((store) => store.contacts);
+  const dispatch = useDispatch();
+
+  const { contacts, selectedContactsID } = useSelector(
+    (store) => store.contacts
+  );
+
+  const handleClick = (e, id) => {
+    const icon = e.currentTarget.firstChild;
+    if (!icon.classList.contains("checked")) {
+      icon.classList.add("checked");
+      dispatch(addSelectedContactID(id));
+    } else {
+      icon.classList.remove("checked");
+      const filteredSelectedContacts = selectedContactsID.filter(
+        (contactID) => contactID !== id
+      );
+      dispatch(refreshSelectedContactsID(filteredSelectedContacts));
+    }
+  };
 
   if (contacts.length < 1) {
     return <NoContactsInfo />;
@@ -37,8 +59,19 @@ const ListContacts = () => {
 
                     return (
                       <StyledLiContact key={phone} id={phone}>
-                        <div className="contact-img no-select">
-                          <i className="fas fa-check"></i>
+                        <div
+                          className="contact-img no-select"
+                          onClick={(e) => handleClick(e, phone)}
+                        >
+                          <i
+                            className={
+                              selectedContactsID.find(
+                                (contactID) => contactID === phone
+                              )
+                                ? "fas fa-check checked"
+                                : "fas fa-check"
+                            }
+                          ></i>
                           {name.slice(0, 1)}
                           {surname.slice(0, 1)}
                         </div>
@@ -254,6 +287,10 @@ const StyledLiContact = styled.li`
       right: 0;
       opacity: 0;
       transition: all 0.1s linear;
+
+      &.checked {
+        opacity: 1;
+      }
     }
   }
 
