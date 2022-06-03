@@ -10,14 +10,18 @@ import {
 const SubmenuBtns = (props) => {
   const dispatch = useDispatch();
   const { contactID, email } = props;
+
+  const showModal = () => {
+    dispatch(handleModalOverlay(true));
+    dispatch(showAddContactModal(false));
+  };
   return (
-      <>
+    <>
       <button
         className="editCon"
         onClick={() => {
-          dispatch(handleModalOverlay(true));
+          showModal();
           dispatch(showDeleteContactModal([false]));
-          dispatch(showAddContactModal(false));
           dispatch(showEditContactModal([true, contactID]));
         }}
       >
@@ -29,9 +33,8 @@ const SubmenuBtns = (props) => {
       <button
         className="deleteCon"
         onClick={() => {
+          showModal();
           dispatch(showEditContactModal(false));
-          dispatch(showAddContactModal(false));
-          dispatch(handleModalOverlay(true));
           dispatch(showDeleteContactModal([true, contactID]));
         }}
       >

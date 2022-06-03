@@ -356,29 +356,31 @@ const StyledContainer = styled.div`
     justify-content: space-around;
     align-items: center;
     margin-bottom: 0.5rem;
-  }
 
-  .new-con-btns button {
-    width: 100px;
-    height: 30px;
-    cursor: pointer;
-    font-family: inherit;
-    font-size: 1rem;
-    font-weight: 600;
-    border: none;
-    border-radius: 1.5rem;
-    letter-spacing: 0.05rem;
-    transition: all 0.1s linear;
-    background-color: var(--white-secondary);
-    color: var(--grey-dark);
-    /* box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px,
-    rgba(14, 30, 37, 0.32) 0px 2px 16px 0px; */
-    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
-    /* opacity: 0.85; */
-  }
+    button {
+      width: 100px;
+      height: 30px;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 1.5rem;
+      letter-spacing: 0.05rem;
+      transition: all 0.1s linear;
+      background-color: var(--white-secondary);
+      color: var(--grey-dark);
 
-  .new-con-btns button:hover {
-    background-color: var(--grey-light);
+      &:hover {
+        background-color: var(--grey-light);
+      }
+
+      &:active {
+        -webkit-box-shadow: inset 1px 2px 2px #535557;
+        -moz-box-shadow: inset 1px 2px 2px #535557;
+        box-shadow: inset 1px 2px 2px #535557;
+      }
+    }
   }
 
   .name-input .invalid-input,

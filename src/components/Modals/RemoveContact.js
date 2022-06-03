@@ -1,23 +1,51 @@
 import React from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-import { handleModalOverlay } from "../../features/modal/modalSlice";
-import { showDeleteContactModal } from "../../features/modal/modalSlice";
-import { refreshContactsList } from "../../features/contacts/contactsSlice";
+import {
+  handleModalOverlay,
+  showDeleteContactModal,
+  showDeleteSelectedContactsModal,
+} from "../../features/modal/modalSlice";
+import {
+  refreshContactsList,
+  refreshSelectedContactsID,
+} from "../../features/contacts/contactsSlice";
 
 const RemoveContact = () => {
   const dispatch = useDispatch();
 
-  const { selectedContactId } = useSelector((store) => store.modal);
-  const { contacts } = useSelector((store) => store.contacts);
+  const {
+    selectedContactId,
+    isDeleteSelectedContactsModal,
+    isDeleteContactModal,
+  } = useSelector((store) => store.modal);
+  const { contacts, selectedContactsID } = useSelector(
+    (store) => store.contacts
+  );
 
-  const removeContactFromList = () => {
-    const newContactsList = contacts.filter(
-      (contact) => contact.phone !== selectedContactId
-    );
+  const closeModal = () => {
     dispatch(handleModalOverlay(false));
-    dispatch(showDeleteContactModal([false, null]));
-    dispatch(refreshContactsList(newContactsList));
+    dispatch(showDeleteContactModal([false]));
+    dispatch(showDeleteSelectedContactsModal(false));
+  };
+
+  const handleRemoveBtn = () => {
+    if (showDeleteSelectedContactsModal) {
+      const filteredContacts = contacts.filter(
+        (contact) => !selectedContactsID.find((id) => contact.phone === id)
+      );
+      dispatch(refreshContactsList(filteredContacts));
+      dispatch(refreshSelectedContactsID([]));
+      closeModal();
+    }
+    if (isDeleteContactModal) {
+      console.log(contacts);
+      const newContactsList = contacts.filter(
+        (contact) => contact.phone !== selectedContactId
+      );
+      closeModal();
+      dispatch(refreshContactsList(newContactsList));
+    }
   };
 
   const findContactFromList = () => {
@@ -27,24 +55,37 @@ const RemoveContact = () => {
     return `${name} ${surname}`;
   };
 
+  const checkContactsLength = () => {
+    if (selectedContactsID.length > 1) {
+      return "Are you sure you want to delete all the";
+    } else {
+      return "Are you sure you want to delete";
+    }
+  };
+
   return (
     <StyledContainer>
       <div className="confirm-container  no-select">
         <div className="confirm-question">
           <p>
-            Are you sure you want to delete the{" "}
-            <span className="selected-contact">{findContactFromList()}</span>{" "}
-            contact?
+            {isDeleteSelectedContactsModal
+              ? checkContactsLength()
+              : "Are you sure you want to delete the"}{" "}
+            <span className="selected-contact">
+              {isDeleteSelectedContactsModal
+                ? selectedContactsID.length
+                : findContactFromList()}
+            </span>{" "}
+            {isDeleteSelectedContactsModal && selectedContactsID.length > 1
+              ? "contacts?"
+              : "contact?"}
           </p>
         </div>
         <div className="confirm-btns">
-          <button className="confirm-delete" onClick={removeContactFromList}>
+          <button className="confirm-delete" onClick={handleRemoveBtn}>
             Delete
           </button>
-          <button
-            className="confirm-cancel"
-            onClick={() => dispatch(handleModalOverlay(false))}
-          >
+          <button className="confirm-cancel" onClick={closeModal}>
             Cancel
           </button>
         </div>

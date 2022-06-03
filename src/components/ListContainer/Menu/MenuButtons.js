@@ -1,11 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
+import { refreshSelectedContactsID } from "../../../features/contacts/contactsSlice";
 import {
-  refreshContactsList,
-  refreshSelectedContactsID,
-} from "../../../features/contacts/contactsSlice";
-
+  handleModalOverlay,
+  showDeleteSelectedContactsModal,
+} from "../../../features/modal/modalSlice";
 const MenuButtons = () => {
   const dispatch = useDispatch();
 
@@ -18,16 +18,15 @@ const MenuButtons = () => {
     dispatch(refreshSelectedContactsID(allIDs));
   };
 
-  const handleUnselectAllBtn = () =>{
+  const handleUnselectAllBtn = () => {
     dispatch(refreshSelectedContactsID([]));
-  }
+  };
 
   const handleRemoveBtn = () => {
-    const filteredContacts = contacts.filter(
-      (contact) => !selectedContactsID.find((id) => contact.phone === id)
-    );
-    dispatch(refreshContactsList(filteredContacts));
-    dispatch(refreshSelectedContactsID([]));
+    if (selectedContactsID.length > 0) {
+      dispatch(handleModalOverlay(true));
+      dispatch(showDeleteSelectedContactsModal(true));
+    }
   };
 
   return (
@@ -35,7 +34,9 @@ const MenuButtons = () => {
       <Button className="menu__btn--select" onClick={handleSelectAllBtn}>
         Select all
       </Button>
-      <Button className="menu__btn--unselect" onClick={handleUnselectAllBtn}>Unselect all</Button>
+      <Button className="menu__btn--unselect" onClick={handleUnselectAllBtn}>
+        Unselect all
+      </Button>
       <Button className="menu__btn--remove" onClick={handleRemoveBtn}>
         Remove Selected
       </Button>

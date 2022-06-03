@@ -5,6 +5,7 @@ const initialState = {
   isShowAddContactModal: false,
   isShowEditContactModal: false,
   isDeleteContactModal: false,
+  isDeleteSelectedContactsModal: false,
   isShowContactInfoModal: false,
   selectedContactId: null,
 };
@@ -34,6 +35,9 @@ const modalSLice = createSlice({
       state.isShowContactInfoModal = action.payload[0];
       if (action.payload[1]) state.selectedContactId = action.payload[1];
     },
+    showDeleteSelectedContactsModal: (state, action) => {
+      state.isDeleteSelectedContactsModal = action.payload;
+    },
   },
 });
 
@@ -44,6 +48,7 @@ export const {
   showEditContactModal,
   showDeleteContactModal,
   showContactInfoModal,
+  showDeleteSelectedContactsModal,
 } = modalSLice.actions;
 
 export default modalSLice.reducer;
