@@ -1,16 +1,8 @@
 import React, { useState, useRef } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  showAddContactModal,
-  showEditContactModal,
-  handleModalOverlay,
-  showDeleteContactModal,
-} from "../../../features/modal/modalSlice";
-import {
-  addNewContact,
-  refreshContactsList,
-} from "../../../features/contacts/contactsSlice";
+import * as modalModule from "../../../features/modal/modalSlice";
+import * as contactsModule from "../../../features/contacts/contactsSlice";
 import { validationFunction } from "../../../helpers/validation";
 import NameAndSurnameInput from "./NameAndSurnameInput";
 import PhoneAndEmailInput from "./PhoneAndEmailInput";
@@ -80,7 +72,7 @@ const AddEditContact = () => {
           emailInput.current.value.match(emailRegExp))
       ) {
         dispatch(
-          addNewContact({
+          contactsModule.addNewContact({
             name: name.toLowerCase(),
             surname: surname.toLowerCase(),
             phone,
@@ -89,8 +81,8 @@ const AddEditContact = () => {
             notes: notes.toLowerCase(),
           })
         );
-        dispatch(showAddContactModal(false));
-        dispatch(handleModalOverlay(false));
+        dispatch(modalModule.showAddContactModal(false));
+        dispatch(modalModule.handleModalOverlay(false));
       } else {
         return;
       }
@@ -111,9 +103,9 @@ const AddEditContact = () => {
         const newContactsList = contacts.filter(
           (contact) => contact.phone !== selectedContactId
         );
-        dispatch(refreshContactsList(newContactsList));
+        dispatch(contactsModule.refreshContactsList(newContactsList));
         dispatch(
-          addNewContact({
+          contactsModule.addNewContact({
             name: name.toLowerCase(),
             surname: surname.toLowerCase(),
             phone,
@@ -122,9 +114,9 @@ const AddEditContact = () => {
             notes: notes.toLowerCase(),
           })
         );
-        dispatch(handleModalOverlay(false));
-        dispatch(showEditContactModal(false));
-        dispatch(showDeleteContactModal([false, phone]));
+        dispatch(modalModule.handleModalOverlay(false));
+        dispatch(modalModule.showEditContactModal(false));
+        dispatch(modalModule.showDeleteContactModal([false, phone]));
       } else {
         return;
       }
@@ -132,9 +124,9 @@ const AddEditContact = () => {
   };
 
   const handleCancelBtn = () => {
-    dispatch(showEditContactModal(false));
-    dispatch(showAddContactModal(false));
-    dispatch(handleModalOverlay(false));
+    dispatch(modalModule.handleModalOverlay(false));
+    dispatch(modalModule.showEditContactModal(false));
+    dispatch(modalModule.showAddContactModal(false));
   };
 
   return (

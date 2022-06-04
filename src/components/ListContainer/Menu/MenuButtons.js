@@ -2,10 +2,9 @@ import React from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { refreshSelectedContactsID } from "../../../features/contacts/contactsSlice";
-import {
-  handleModalOverlay,
-  showDeleteSelectedContactsModal,
-} from "../../../features/modal/modalSlice";
+import * as modalModule from "../../../features/modal/modalSlice";
+import { handleMenuBtn } from "../../../features/menu/menuSlice";
+
 const MenuButtons = () => {
   const dispatch = useDispatch();
 
@@ -24,8 +23,9 @@ const MenuButtons = () => {
 
   const handleRemoveBtn = () => {
     if (selectedContactsID.length > 0) {
-      dispatch(handleModalOverlay(true));
-      dispatch(showDeleteSelectedContactsModal(true));
+      dispatch(modalModule.handleModalOverlay(true));
+      dispatch(modalModule.showDeleteSelectedContactsModal(true));
+      dispatch(handleMenuBtn(false));
     }
   };
 

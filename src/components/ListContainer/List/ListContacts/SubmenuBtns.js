@@ -1,19 +1,14 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import {
-  handleModalOverlay,
-  showDeleteContactModal,
-  showAddContactModal,
-  showEditContactModal,
-} from "../../../../features/modal/modalSlice";
+import * as modalModule from "../../../../features/modal/modalSlice";
 
 const SubmenuBtns = (props) => {
   const dispatch = useDispatch();
   const { contactID, email } = props;
 
   const showModal = () => {
-    dispatch(handleModalOverlay(true));
-    dispatch(showAddContactModal(false));
+    dispatch(modalModule.handleModalOverlay(true));
+    dispatch(modalModule.showAddContactModal(false));
   };
   return (
     <>
@@ -21,8 +16,8 @@ const SubmenuBtns = (props) => {
         className="editCon"
         onClick={() => {
           showModal();
-          dispatch(showDeleteContactModal([false]));
-          dispatch(showEditContactModal([true, contactID]));
+          dispatch(modalModule.showDeleteContactModal([false]));
+          dispatch(modalModule.showEditContactModal([true, contactID]));
         }}
       >
         Edit
@@ -34,8 +29,8 @@ const SubmenuBtns = (props) => {
         className="deleteCon"
         onClick={() => {
           showModal();
-          dispatch(showEditContactModal(false));
-          dispatch(showDeleteContactModal([true, contactID]));
+          dispatch(modalModule.showEditContactModal(false));
+          dispatch(modalModule.showDeleteContactModal([true, contactID]));
         }}
       >
         Delete

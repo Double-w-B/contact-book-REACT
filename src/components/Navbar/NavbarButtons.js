@@ -1,14 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-import { handleMenuBtn } from "../../features/menu/menuSlice";
-import {
-  handleModalOverlay,
-  handleAddEditContactModal,
-  showAddContactModal,
-  showEditContactModal,
-} from "../../features/modal/modalSlice";
 import { hideActiveSubmenu } from "../../helpers/helpers";
+import { handleMenuBtn } from "../../features/menu/menuSlice";
+import * as modalModule from "../../features/modal/modalSlice";
+import { handleSearchingContact } from "../../features/contacts/contactsSlice";
 
 const NavbarButtons = () => {
   const dispatch = useDispatch();
@@ -19,17 +15,20 @@ const NavbarButtons = () => {
       <Button
         className="nav__btn--add no-select"
         onClick={() => {
-          dispatch(handleModalOverlay(true));
-          dispatch(handleAddEditContactModal(true));
-          dispatch(showEditContactModal([false]));
-          dispatch(showAddContactModal(true));
+          dispatch(modalModule.handleModalOverlay(true));
+          dispatch(modalModule.handleAddEditContactModal(true));
+          dispatch(modalModule.showEditContactModal([false]));
+          dispatch(modalModule.showAddContactModal(true));
         }}
       >
         <i className="fas fa-user-plus"></i>
         <p>Add</p>
         <p>New</p>
       </Button>
-      <Button className="nav__btn--show no-select">
+      <Button
+        className="nav__btn--show no-select"
+        onClick={() => dispatch(handleSearchingContact(""))}
+      >
         <i className="fas fa-address-book"></i>
         <p>List</p>
       </Button>

@@ -2,10 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import ListContacts from "./ListContacts/ListContacts";
 import ListContactsAmount from "./ListContactsAmount";
-import {
-  handleClickOnList,
-  handleMouseOverList,
-} from "../../../helpers/helpers";
+import * as helpersModule from "../../../helpers/helpers";
 import { handleMenuBtn } from "../../../features/menu/menuSlice";
 import { useDispatch } from "react-redux";
 
@@ -16,9 +13,9 @@ const List = () => {
     <StyledContainer>
       <ul
         className="list__contacts"
-        onMouseOver={handleMouseOverList}
+        onMouseOver={helpersModule.handleMouseOverList}
         onClick={(e) => {
-          handleClickOnList(e);
+          helpersModule.handleClickOnList(e);
           dispatch(handleMenuBtn(false));
         }}
       >

@@ -1,15 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  handleModalOverlay,
-  showDeleteContactModal,
-  showDeleteSelectedContactsModal,
-} from "../../features/modal/modalSlice";
-import {
-  refreshContactsList,
-  refreshSelectedContactsID,
-} from "../../features/contacts/contactsSlice";
+import * as modalModule from "../../features/modal/modalSlice";
+import * as contactsModule from "../../features/contacts/contactsSlice";
 
 const RemoveContact = () => {
   const dispatch = useDispatch();
@@ -24,18 +17,18 @@ const RemoveContact = () => {
   );
 
   const closeModal = () => {
-    dispatch(handleModalOverlay(false));
-    dispatch(showDeleteContactModal([false]));
-    dispatch(showDeleteSelectedContactsModal(false));
+    dispatch(modalModule.handleModalOverlay(false));
+    dispatch(modalModule.showDeleteContactModal([false]));
+    dispatch(modalModule.showDeleteSelectedContactsModal(false));
   };
 
   const handleRemoveBtn = () => {
-    if (showDeleteSelectedContactsModal) {
+    if (modalModule.showDeleteSelectedContactsModal) {
       const filteredContacts = contacts.filter(
         (contact) => !selectedContactsID.find((id) => contact.phone === id)
       );
-      dispatch(refreshContactsList(filteredContacts));
-      dispatch(refreshSelectedContactsID([]));
+      dispatch(contactsModule.refreshContactsList(filteredContacts));
+      dispatch(contactsModule.refreshSelectedContactsID([]));
       closeModal();
     }
     if (isDeleteContactModal) {
@@ -44,7 +37,7 @@ const RemoveContact = () => {
         (contact) => contact.phone !== selectedContactId
       );
       closeModal();
-      dispatch(refreshContactsList(newContactsList));
+      dispatch(contactsModule.refreshContactsList(newContactsList));
     }
   };
 

@@ -3,6 +3,8 @@ import { createSlice, current } from "@reduxjs/toolkit";
 const initialState = {
   contacts: JSON.parse(localStorage.getItem("contacts")) || [],
   selectedContactsID: [],
+  searchingContact: "",
+  filteredContactsAmount: "",
 };
 
 const contactsSlice = createSlice({
@@ -28,6 +30,13 @@ const contactsSlice = createSlice({
       state.selectedContactsID = action.payload;
       console.log(state.selectedContactsID);
     },
+    handleSearchingContact: (state, action) => {
+      state.searchingContact = action.payload;
+      console.log(state.searchingContact);
+    },
+    setFilteredContactsAmount: (state, action) => {
+      state.filteredContactsAmount = action.payload;
+    },
   },
 });
 
@@ -36,6 +45,8 @@ export const {
   refreshContactsList,
   addSelectedContactID,
   refreshSelectedContactsID,
+  handleSearchingContact,
+  setFilteredContactsAmount,
 } = contactsSlice.actions;
 
 export default contactsSlice.reducer;

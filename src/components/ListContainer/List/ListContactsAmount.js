@@ -3,11 +3,13 @@ import styled from "styled-components";
 import { useSelector } from "react-redux";
 
 const ListContactsAmount = () => {
-  const { contacts } = useSelector((store) => store.contacts);
+  const { contacts, searchingContact, filteredContactsAmount } = useSelector(
+    (store) => store.contacts
+  );
 
   return (
     <StyledContactsAmount className="no-select">
-      <p>Contacts: {contacts.length}</p>
+      <p>Contacts: {searchingContact? filteredContactsAmount : contacts.length}</p>
     </StyledContactsAmount>
   );
 };

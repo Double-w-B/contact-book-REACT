@@ -1,110 +1,63 @@
 import React from "react";
 import styled from "styled-components";
-import { useDispatch, useSelector } from "react-redux";
-import { alphabet } from "../../../../data/data";
-import { uniqueFilteredLetters } from "../../../../helpers/helpers";
 import arrowIcon from "../../../../assets/arrowDown.svg";
-import NoContactsInfo from "./NoContactsInfo";
+import { useDispatch, useSelector } from "react-redux";
 import SubmenuBtns from "./SubmenuBtns";
 import ContactsInfo from "./ContactsInfo";
-import * as contactsModule from "../../../../features/contacts/contactsSlice";
-import FilteredContacts from "./FilteredContacts";
+import { setFilteredContactsAmount } from "../../../../features/contacts/contactsSlice";
 
-const ListContacts = () => {
+const FilteredContacts = () => {
   const dispatch = useDispatch();
 
-  const { contacts, selectedContactsID, searchingContact } = useSelector(
-    (store) => store.contacts
-  );
+  const { contacts, searchingContact } = useSelector((store) => store.contacts);
 
-  const handleClick = (e, id) => {
-    const icon = e.currentTarget.firstChild;
-    if (!icon.classList.contains("checked")) {
-      icon.classList.add("checked");
-      dispatch(contactsModule.addSelectedContactID(id));
-    } else {
-      icon.classList.remove("checked");
-      const filteredSelectedContacts = selectedContactsID.filter(
-        (contactID) => contactID !== id
+  const findMatches = (wordToMatch, contactsData) => {
+    return contactsData.filter((person) => {
+      const regex = new RegExp(wordToMatch, "gi");
+      return (
+        person.name.match(regex) ||
+        person.surname.match(regex) ||
+        person.phone.match(regex)
       );
-      dispatch(
-        contactsModule.refreshSelectedContactsID(filteredSelectedContacts)
-      );
-    }
+    });
   };
 
-  if (contacts.length < 1) {
-    return <NoContactsInfo />;
-  }
-  
-  if (contacts.length > 1 && searchingContact) {
-    return <FilteredContacts />;
-  }
+  const filteredContacts = findMatches(searchingContact, contacts).sort(
+    (a, b) => a.name > b.name
+  );
+
+  dispatch(setFilteredContactsAmount(filteredContacts.length));
 
   return (
     <>
-      {uniqueFilteredLetters(contacts).map((letter) => {
-        if (alphabet.includes(letter)) {
-          return (
-            <StyledLetterContainer
-              key={letter}
-              id={letter}
-              className="letter-container"
-            >
-              <div className="first-letter no-select">
-                <p>{letter}</p>
-              </div>
-              <ul className="contact-list">
-                {contacts
-                  .filter((person) => person.name.slice(0, 1) === letter)
-                  .sort((a, b) => a.name > b.name)
-                  .map((person) => {
-                    const { phone, name, surname, mail } = person;
-
-                    return (
-                      <StyledLiContact key={phone} id={phone}>
-                        <div
-                          className="contact-img no-select"
-                          onClick={(e) => handleClick(e, phone)}
-                        >
-                          <i
-                            className={
-                              selectedContactsID.find(
-                                (contactID) => contactID === phone
-                              )
-                                ? "fas fa-check checked"
-                                : "fas fa-check"
-                            }
-                          ></i>
-                          {name.slice(0, 1)}
-                          {surname.slice(0, 1)}
-                        </div>
-                        <div className="contact">
-                          <ContactsInfo
-                            contactID={phone}
-                            name={name}
-                            surname={surname}
-                          />
-                        </div>
-                        <div className="submenu-icon">
-                          <img
-                            src={arrowIcon}
-                            alt="icon"
-                            onClick={(e) => {
-                              e.currentTarget.classList.toggle("active");
-                            }}
-                          />
-                        </div>
-                        <div className="submenu">
-                          <SubmenuBtns contactID={phone} email={mail} />
-                        </div>
-                      </StyledLiContact>
-                    );
-                  })}
-              </ul>
-            </StyledLetterContainer>
-          );
-        }
+      {filteredContacts.map((contact, index) => {
+        const { name, surname, phone, mail } = contact;
+        return (
+          <StyledLetterContainer key={index}>
+            <ul className="contact-list">
+              <StyledLiContact id={phone} className="one-child">
+                <div className="contact-img no-select">
+                  <i className="fas fa-check"></i>
+                  {name.slice(0, 1)}
+                  {surname.slice(0, 1)}
+                </div>
+                <div className="contact">
+                  <ContactsInfo
+                    contactID={phone}
+                    name={name}
+                    surname={surname}
+                  />
+                </div>
+                <div className="submenu-icon">
+                  <img src={arrowIcon} alt="icon" />
+                </div>
+                <div className="submenu">
+                  <SubmenuBtns contactID={phone} email={mail} />
+                </div>
+              </StyledLiContact>
+            </ul>
+          </StyledLetterContainer>
+        );
       })}
     </>
   );
@@ -330,4 +283,5 @@ const StyledLiContact = styled.li`
     }
   }
 `;
-export default ListContacts;
+
+export default FilteredContacts;

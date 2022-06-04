@@ -1,10 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  handleModalOverlay,
-  showContactInfoModal,
-} from "../../features/modal/modalSlice";
+import * as modalModule from "../../features/modal/modalSlice";
 
 const ContactInfo = () => {
   const dispatch = useDispatch();
@@ -21,8 +18,8 @@ const ContactInfo = () => {
         <i
           className="fas fa-times"
           onClick={() => {
-            dispatch(showContactInfoModal(false));
-            dispatch(handleModalOverlay(false));
+            dispatch(modalModule.showContactInfoModal(false));
+            dispatch(modalModule.handleModalOverlay(false));
           }}
         ></i>
       </div>

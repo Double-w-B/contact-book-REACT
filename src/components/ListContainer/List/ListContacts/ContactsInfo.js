@@ -1,20 +1,17 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import {
-  handleModalOverlay,
-  showContactInfoModal,
-} from "../../../../features/modal/modalSlice";
+import * as modalModule from "../../../../features/modal/modalSlice";
 
 const ContactsInfo = (props) => {
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   const { contactID, name, surname } = props;
   return (
     <>
       <p
         onClick={() => {
-          dispatch(handleModalOverlay(true));
-          dispatch(showContactInfoModal([true, contactID]));
+          dispatch(modalModule.handleModalOverlay(true));
+          dispatch(modalModule.showContactInfoModal([true, contactID]));
         }}
       >
         {name} {surname}

@@ -1,12 +1,19 @@
 import React from "react";
 import styled from "styled-components";
+import { useDispatch, useSelector } from "react-redux";
+import { handleSearchingContact } from "../../features/contacts/contactsSlice";
 
 const NavbarInput = () => {
+  const dispatch = useDispatch();
+  const { searchingContact } = useSelector((store) => store.contacts);
+
   return (
     <InputContainer className="input__container">
       <input
         type="text"
         id="search"
+        value={searchingContact}
+        onChange={(e) => dispatch(handleSearchingContact(e.target.value))}
         placeholder="Type to search ..."
         onFocus={(e) => (e.target.placeholder = "")}
         onBlur={(e) => (e.target.placeholder = "Type to search ...")}
