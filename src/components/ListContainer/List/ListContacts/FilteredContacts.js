@@ -25,13 +25,27 @@ const FilteredContacts = () => {
   const filteredContacts = findMatches(searchingContact, contacts).sort(
     (a, b) => a.name > b.name
   );
+  React.useEffect(() => {
+    dispatch(setFilteredContactsAmount(filteredContacts.length));
+  });
 
-  dispatch(setFilteredContactsAmount(filteredContacts.length));
-
+  if (filteredContacts.length === 0) {
+    return (
+      <StyledZeroResultsContainer>
+        <div className="info-img no-select">
+          <i className="fas fa-search"></i>
+        </div>
+        <div className="info-text no-select">
+          It looks like there aren't any matches for your search
+        </div>
+      </StyledZeroResultsContainer>
+    );
+  }
   return (
     <>
       {filteredContacts.map((contact, index) => {
         const { name, surname, phone, mail } = contact;
+
         return (
           <StyledLetterContainer key={index}>
             <ul className="contact-list">
@@ -62,6 +76,37 @@ const FilteredContacts = () => {
     </>
   );
 };
+
+const StyledZeroResultsContainer = styled.div`
+  width: 100%;
+  height: 25rem;
+  color: var(--white-primary);
+
+  .info-img {
+    width: 100%;
+    height: 50%;
+    font-size: 5rem;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-left: 0.8rem;
+    opacity: 0.2;
+    color: var(--grey-dark);
+  }
+
+  .info-text {
+    width: 100%;
+    height: 25%;
+    text-align: center;
+    margin-top: 2rem;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    font-size: 1.5rem;
+    opacity: 0.2;
+    color: var(--grey-dark);
+  }
+`;
 
 const StyledLetterContainer = styled.li`
   .first-letter {

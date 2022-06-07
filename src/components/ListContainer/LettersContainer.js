@@ -4,14 +4,16 @@ import { useSelector } from "react-redux";
 import { alphabet } from "../../data/data";
 import { uniqueFilteredLetters } from "../../helpers/helpers";
 
-const LettersContainer = () => {
+const LettersContainer = (props) => {
   const { contacts } = useSelector((store) => store.contacts);
 
   const letters = alphabet.map((letter) => {
     if (uniqueFilteredLetters(contacts).includes(letter)) {
       return (
         <div className="letters__letter no-select" key={letter}>
-          <a href={`#${letter}`}>{letter}</a>
+          <a href={`#${letter}`} onClick={(e) => props.handleLetterClick(e)}>
+            {letter}
+          </a>
         </div>
       );
     } else {
@@ -64,6 +66,7 @@ const StyledContainer = styled.section`
 
   .no-name {
     cursor: default;
+    pointer-events: none;
 
     a {
       opacity: 0.5;

@@ -36,7 +36,7 @@ const ListContacts = () => {
   if (contacts.length < 1) {
     return <NoContactsInfo />;
   }
-  
+
   if (contacts.length > 1 && searchingContact) {
     return <FilteredContacts />;
   }

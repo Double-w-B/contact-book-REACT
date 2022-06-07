@@ -6,11 +6,11 @@ import * as helpersModule from "../../../helpers/helpers";
 import { handleMenuBtn } from "../../../features/menu/menuSlice";
 import { useDispatch } from "react-redux";
 
-const List = () => {
+const List = (props) => {
   const dispatch = useDispatch();
 
   return (
-    <StyledContainer>
+    <StyledContainer ref={props.listEl}>
       <ul
         className="list__contacts"
         onMouseOver={helpersModule.handleMouseOverList}

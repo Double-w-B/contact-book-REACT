@@ -14,9 +14,9 @@ const NavbarInput = () => {
         id="search"
         value={searchingContact}
         onChange={(e) => dispatch(handleSearchingContact(e.target.value))}
-        placeholder="Type to search ..."
+        placeholder="Name, surname, number ..."
         onFocus={(e) => (e.target.placeholder = "")}
-        onBlur={(e) => (e.target.placeholder = "Type to search ...")}
+        onBlur={(e) => (e.target.placeholder = "Name, surname, number ...")}
         autoComplete="off"
       />
       <div className="input__search-icon">
@@ -57,6 +57,7 @@ const InputContainer = styled.div`
       color: var(--grey-dark-secondary);
       opacity: 0.2;
       font-size: 1rem;
+      font-style: italic;
     }
   }
 

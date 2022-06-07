@@ -15,24 +15,19 @@ const contactsSlice = createSlice({
       const currentState = current(state);
       state.contacts = [...currentState.contacts, action.payload];
       localStorage.setItem("contacts", JSON.stringify(state.contacts));
-      console.log(state.contacts);
     },
     refreshContactsList: (state, action) => {
       state.contacts = action.payload;
       localStorage.setItem("contacts", JSON.stringify(state.contacts));
-      console.log(state.contacts);
     },
     addSelectedContactID: (state, action) => {
       state.selectedContactsID = [...state.selectedContactsID, action.payload];
-      console.log(state.selectedContactsID);
     },
     refreshSelectedContactsID: (state, action) => {
       state.selectedContactsID = action.payload;
-      console.log(state.selectedContactsID);
     },
     handleSearchingContact: (state, action) => {
       state.searchingContact = action.payload;
-      console.log(state.searchingContact);
     },
     setFilteredContactsAmount: (state, action) => {
       state.filteredContactsAmount = action.payload;
