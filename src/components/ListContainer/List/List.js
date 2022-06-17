@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import ListContacts from "./ListContacts/ListContacts";
 import ListContactsAmount from "./ListContactsAmount";
@@ -8,9 +8,19 @@ import { useDispatch } from "react-redux";
 
 const List = (props) => {
   const dispatch = useDispatch();
+  const [isMove, setIsMove] = useState(false);
+
+  useEffect(() => {
+    const scrollbarThumb = () => {
+      setIsMove(true);
+      setTimeout(setIsMove(false), 700);
+    };
+    props.listEl.current.addEventListener("scroll", scrollbarThumb);
+    props.listEl.current.removeEventListener("scroll", scrollbarThumb);
+  });
 
   return (
-    <StyledContainer ref={props.listEl}>
+    <StyledContainer ref={props.listEl} className={isMove && "move"}>
       <ul
         className="list__contacts"
         onMouseOver={helpersModule.handleMouseOverList}
@@ -40,8 +50,17 @@ const StyledContainer = styled.section`
   border-bottom-left-radius: 0.5rem;
   background-color: var(--grey-light-2);
 
+  &.move {
+    scrollbar-color: var(--blue-primary) var(--grey-light-2);
+  }
+
+  &.move::-webkit-scrollbar-thumb {
+    height: 30px;
+    background-color: var(--blue-primary);
+  }
+
   &::-webkit-scrollbar {
-    width: 3px;
+    width: 4px;
   }
 
   &::-webkit-scrollbar-track {
@@ -51,6 +70,9 @@ const StyledContainer = styled.section`
   &::-webkit-scrollbar-thumb {
     height: 30px;
     background-color: var(--grey-light-2);
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--blue-primary);
   }
 
   & .list__contacts {
