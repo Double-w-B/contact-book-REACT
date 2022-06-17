@@ -40,7 +40,12 @@ const MenuButtons = () => {
       <Button className="menu__btn--remove" onClick={handleRemoveBtn}>
         Remove Selected
       </Button>
-      <Button className="menu__btn--mode">Change theme</Button>
+      <Button
+        className="menu__btn--mode"
+        onClick={() => dispatch(handleMenuBtn(false))}
+      >
+        Change theme
+      </Button>
     </>
   );
 };
@@ -54,16 +59,15 @@ const Button = styled.button`
   padding-left: 0.8rem;
   background-color: transparent;
   border: none;
-  font-weight: bold;
   font-size: 1rem;
-  color: var(--white-secondary);
+  color: var(--almost-black);
 
   &:active {
     transform: scale(0.98);
   }
 
   &:hover {
-    color: var(--grey-semi-light);
+    color: var(--blue-primary);
   }
 `;
 

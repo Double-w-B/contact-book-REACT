@@ -35,6 +35,7 @@ const StyledContainer = styled.section`
   width: 100%;
   height: 91%;
   display: flex;
+  overflow-y: hidden;
   position: relative;
 `;
 

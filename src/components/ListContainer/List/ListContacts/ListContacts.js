@@ -275,6 +275,7 @@ const StyledLiContact = styled.li`
     padding-left: 0.1rem;
     position: relative;
     cursor: pointer;
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 8px;
 
     .fa-check {
       position: absolute;
@@ -305,7 +306,7 @@ const StyledLiContact = styled.li`
     margin-left: 1rem;
     text-transform: capitalize;
     font-size: 1.2rem;
-    color: var(--grey-dark-secondary);
+    color: var(--dark-mode-primary);
 
     p {
       &:first-child {
@@ -319,6 +320,7 @@ const StyledLiContact = styled.li`
       &:nth-child(2) {
         margin: 0.1rem 0 0 0;
         font-size: 1.05rem;
+        color: var(--grey-semi-dark);
       }
 
       .fas {
