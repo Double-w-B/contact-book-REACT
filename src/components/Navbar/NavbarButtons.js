@@ -10,16 +10,23 @@ const NavbarButtons = () => {
   const dispatch = useDispatch();
   const { isMenuOpen } = useSelector((store) => store.menu);
 
+  const handleAddNewContactBtn = () => {
+    dispatch(modalModule.handleModalOverlay(true));
+    dispatch(modalModule.handleAddEditContactModal(true));
+    dispatch(modalModule.showEditContactModal([false]));
+    dispatch(modalModule.showAddContactModal(true));
+  };
+
+  const handleMenuBtnClick = () => {
+    dispatch(handleMenuBtn(!isMenuOpen));
+    hideActiveSubmenu();
+  };
+
   return (
     <>
       <Button
         className="nav__btn--add no-select"
-        onClick={() => {
-          dispatch(modalModule.handleModalOverlay(true));
-          dispatch(modalModule.handleAddEditContactModal(true));
-          dispatch(modalModule.showEditContactModal([false]));
-          dispatch(modalModule.showAddContactModal(true));
-        }}
+        onClick={handleAddNewContactBtn}
       >
         <i className="fas fa-user-plus"></i>
         <p>Add</p>
@@ -33,13 +40,7 @@ const NavbarButtons = () => {
         <p>List</p>
       </Button>
 
-      <Button
-        className="nav__btn--menu no-select"
-        onClick={() => {
-          dispatch(handleMenuBtn(!isMenuOpen));
-          hideActiveSubmenu();
-        }}
-      >
+      <Button className="nav__btn--menu no-select" onClick={handleMenuBtnClick}>
         <i className="fas fa-bars"></i>
       </Button>
     </>

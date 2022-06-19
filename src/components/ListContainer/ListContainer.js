@@ -14,7 +14,7 @@ const ListContainer = () => {
     if (document.getElementById(id) === null) return;
 
     const element = document.getElementById(id);
-    let position = element.offsetTop - 10;
+    let position = element.offsetTop - 15;
 
     listEl.current.scrollTo({
       left: 0,

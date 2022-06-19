@@ -10,31 +10,26 @@ const SubmenuBtns = (props) => {
     dispatch(modalModule.handleModalOverlay(true));
     dispatch(modalModule.showAddContactModal(false));
   };
+
+  const handleEditBtn = () => {
+    showModal();
+    dispatch(modalModule.showDeleteContactModal([false]));
+    dispatch(modalModule.showEditContactModal([true, contactID]));
+  };
+
+  const handleDeleteBtn = () => {
+    showModal();
+    dispatch(modalModule.showEditContactModal(false));
+    dispatch(modalModule.showDeleteContactModal([true, contactID]));
+  };
+
   return (
     <>
-      <button
-        className="editCon"
-        onClick={() => {
-          showModal();
-          dispatch(modalModule.showDeleteContactModal([false]));
-          dispatch(modalModule.showEditContactModal([true, contactID]));
-        }}
-      >
-        Edit
-      </button>
+      <button onClick={handleEditBtn}>Edit</button>
       <a href={`mailto:${email}`}>
-        <button className="sendEm">Send email</button>
+        <button>Send email</button>
       </a>
-      <button
-        className="deleteCon"
-        onClick={() => {
-          showModal();
-          dispatch(modalModule.showEditContactModal(false));
-          dispatch(modalModule.showDeleteContactModal([true, contactID]));
-        }}
-      >
-        Delete
-      </button>
+      <button onClick={handleDeleteBtn}>Delete</button>
     </>
   );
 };

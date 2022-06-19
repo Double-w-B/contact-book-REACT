@@ -43,69 +43,72 @@ const ListContacts = () => {
 
   return (
     <>
-      {uniqueFilteredLetters(contacts).map((letter) => {
-        if (alphabet.includes(letter)) {
-          return (
-            <StyledLetterContainer
-              key={letter}
-              id={letter}
-              className="letter-container"
-            >
-              <div className="first-letter no-select">
-                <p>{letter}</p>
-              </div>
-              <ul className="contact-list">
-                {contacts
-                  .filter((person) => person.name.slice(0, 1) === letter)
-                  .sort((a, b) => a.name > b.name)
-                  .map((person) => {
-                    const { phone, name, surname, mail } = person;
+      {
+        // eslint-disable-next-line
+        uniqueFilteredLetters(contacts).map((letter) => {
+          if (alphabet.includes(letter)) {
+            return (
+              <StyledLetterContainer
+                key={letter}
+                id={letter}
+                className="letter-container"
+              >
+                <div className="first-letter no-select">
+                  <p>{letter}</p>
+                </div>
+                <ul className="contact-list">
+                  {contacts
+                    .filter((person) => person.name.slice(0, 1) === letter)
+                    .sort((a, b) => a.name > b.name)
+                    .map((person) => {
+                      const { phone, name, surname, mail } = person;
 
-                    return (
-                      <StyledLiContact key={phone} id={phone}>
-                        <div
-                          className="contact-img no-select"
-                          onClick={(e) => handleClick(e, phone)}
-                        >
-                          <i
-                            className={
-                              selectedContactsID.find(
-                                (contactID) => contactID === phone
-                              )
-                                ? "fas fa-check checked"
-                                : "fas fa-check"
-                            }
-                          ></i>
-                          {name.slice(0, 1)}
-                          {surname.slice(0, 1)}
-                        </div>
-                        <div className="contact">
-                          <ContactsInfo
-                            contactID={phone}
-                            name={name}
-                            surname={surname}
-                          />
-                        </div>
-                        <div className="submenu-icon">
-                          <img
-                            src={arrowIcon}
-                            alt="icon"
-                            onClick={(e) => {
-                              e.currentTarget.classList.toggle("active");
-                            }}
-                          />
-                        </div>
-                        <div className="submenu">
-                          <SubmenuBtns contactID={phone} email={mail} />
-                        </div>
-                      </StyledLiContact>
-                    );
-                  })}
-              </ul>
-            </StyledLetterContainer>
-          );
-        }
-      })}
+                      return (
+                        <StyledLiContact key={phone} id={phone}>
+                          <div
+                            className="contact-img no-select"
+                            onClick={(e) => handleClick(e, phone)}
+                          >
+                            <i
+                              className={
+                                selectedContactsID.find(
+                                  (contactID) => contactID === phone
+                                )
+                                  ? "fas fa-check checked"
+                                  : "fas fa-check"
+                              }
+                            ></i>
+                            {name.slice(0, 1)}
+                            {surname.slice(0, 1)}
+                          </div>
+                          <div className="contact">
+                            <ContactsInfo
+                              contactID={phone}
+                              name={name}
+                              surname={surname}
+                            />
+                          </div>
+                          <div className="submenu-icon">
+                            <img
+                              src={arrowIcon}
+                              alt="icon"
+                              onClick={(e) => {
+                                e.currentTarget.classList.toggle("active");
+                              }}
+                            />
+                          </div>
+                          <div className="submenu">
+                            <SubmenuBtns contactID={phone} email={mail} />
+                          </div>
+                        </StyledLiContact>
+                      );
+                    })}
+                </ul>
+              </StyledLetterContainer>
+            );
+          }
+        })
+      }
     </>
   );
 };

@@ -10,28 +10,41 @@ const List = (props) => {
   const dispatch = useDispatch();
   const [isMove, setIsMove] = useState(false);
 
+  const scrollbarThumb = () => {
+    setIsMove(true);
+    setTimeout(() => setIsMove(false), 700);
+  };
+
   useEffect(() => {
-    const scrollbarThumb = () => {
-      setIsMove(true);
-      setTimeout(setIsMove(false), 700);
-    };
-    props.listEl.current.addEventListener("scroll", scrollbarThumb);
-    props.listEl.current.removeEventListener("scroll", scrollbarThumb);
+    const listElement = props.listEl.current;
+    
+    listElement.addEventListener("scroll", scrollbarThumb);
+    return () => listElement.removeEventListener("scroll", scrollbarThumb);
   });
 
+  useEffect(() => {
+    props.listEl.current.scrollTo(0, 0);
+  }, [props.listEl]);
+
+  const handleClick = (e) => {
+    helpersModule.handleClickOnList(e);
+    dispatch(handleMenuBtn(false));
+  };
+
   return (
-    <StyledContainer ref={props.listEl} className={isMove && "move"}>
-      <ul
-        className="list__contacts"
-        onMouseOver={helpersModule.handleMouseOverList}
-        onClick={(e) => {
-          helpersModule.handleClickOnList(e);
-          dispatch(handleMenuBtn(false));
-        }}
-      >
-        <ListContacts />
-      </ul>
-      <ListContactsAmount />
+    <StyledContainer ref={props.listEl} className={isMove ? "move" : undefined}>
+      <div class="list__top-opacity"></div>
+      <div class="list__content">
+        <ul
+          className="list__contacts"
+          onMouseOver={helpersModule.handleMouseOverList}
+          onClick={(e) => handleClick(e)}
+        >
+          <ListContacts />
+        </ul>
+        <ListContactsAmount />
+        <div class="list__bottom-opacity"></div>
+      </div>
     </StyledContainer>
   );
 };
@@ -50,15 +63,6 @@ const StyledContainer = styled.section`
   border-bottom-left-radius: 0.5rem;
   background-color: var(--grey-light-2);
 
-  &.move {
-    scrollbar-color: var(--blue-primary) var(--grey-light-2);
-  }
-
-  &.move::-webkit-scrollbar-thumb {
-    height: 30px;
-    background-color: var(--blue-primary);
-  }
-
   &::-webkit-scrollbar {
     width: 4px;
   }
@@ -71,17 +75,49 @@ const StyledContainer = styled.section`
     height: 30px;
     background-color: var(--grey-light-2);
   }
+
   &::-webkit-scrollbar-thumb {
+    background-color: var(--blue-primary);
+  }
+
+  &.move {
+    scrollbar-color: var(--blue-primary) var(--grey-light-2);
+  }
+
+  &.move::-webkit-scrollbar-thumb {
+    height: 30px;
     background-color: var(--blue-primary);
   }
 
   & .list__contacts {
     width: 100%;
-    padding: 2rem 1.7rem 1.5rem 2rem;
+    padding: 0 1.7rem 0 2rem;
     list-style: none;
   }
+
   & .list__contacts * {
     transition: var(--transition);
+  }
+
+  .list__top-opacity,
+  .list__bottom-opacity {
+    padding: 0.5rem;
+    background: linear-gradient(var(--grey-light-2) 25%, transparent);
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  }
+  .list__bottom-opacity {
+    background: linear-gradient(transparent, var(--grey-light-2) 55%);
+    bottom: -0.05rem;
+  }
+
+  .list__content {
+    width: 100%;
+    height: calc(100% - 1rem);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   }
 `;
 

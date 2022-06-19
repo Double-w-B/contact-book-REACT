@@ -18,6 +18,7 @@ const StyledContactsAmount = styled.section`
   width: 100%;
   display: flex;
   justify-content: center;
+  margin-top: auto;
 
   p {
     margin: 0.5rem;
