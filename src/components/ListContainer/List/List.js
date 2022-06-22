@@ -33,8 +33,8 @@ const List = (props) => {
 
   return (
     <StyledContainer ref={props.listEl} className={isMove ? "move" : undefined}>
-      <div class="list__top-opacity"></div>
-      <div class="list__content">
+      <div className="list__top-opacity"></div>
+      <div className="list__content">
         <ul
           className="list__contacts"
           onMouseOver={helpersModule.handleMouseOverList}
@@ -43,7 +43,7 @@ const List = (props) => {
           <ListContacts />
         </ul>
         <ListContactsAmount />
-        <div class="list__bottom-opacity"></div>
+        <div className="list__bottom-opacity"></div>
       </div>
     </StyledContainer>
   );

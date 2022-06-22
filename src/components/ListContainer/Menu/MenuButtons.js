@@ -8,13 +8,18 @@ import { handleMenuBtn } from "../../../features/menu/menuSlice";
 const MenuButtons = () => {
   const dispatch = useDispatch();
 
-  const { contacts, selectedContactsID } = useSelector(
+  const { contacts, selectedContactsID, filteredContactsList } = useSelector(
     (store) => store.contacts
   );
 
   const handleSelectAllBtn = () => {
+    const filteredContactsIDs = filteredContactsList.map(
+      (contact) => contact.phone
+    );
     const allIDs = contacts.map((contact) => contact.phone);
-    dispatch(refreshSelectedContactsID(allIDs));
+    filteredContactsList
+      ? dispatch(refreshSelectedContactsID(filteredContactsIDs))
+      : dispatch(refreshSelectedContactsID(allIDs));
   };
 
   const handleUnselectAllBtn = () => {

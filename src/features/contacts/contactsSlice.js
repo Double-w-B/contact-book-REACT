@@ -5,6 +5,7 @@ const initialState = {
   selectedContactsID: [],
   searchingContact: "",
   filteredContactsAmount: "",
+  filteredContactsList: "",
 };
 
 const contactsSlice = createSlice({
@@ -32,6 +33,9 @@ const contactsSlice = createSlice({
     setFilteredContactsAmount: (state, action) => {
       state.filteredContactsAmount = action.payload;
     },
+    setFilteredContacts: (state, action) => {
+      state.filteredContactsList = action.payload;
+    },
   },
 });
 
@@ -42,6 +46,7 @@ export const {
   refreshSelectedContactsID,
   handleSearchingContact,
   setFilteredContactsAmount,
+  setFilteredContacts,
 } = contactsSlice.actions;
 
 export default contactsSlice.reducer;

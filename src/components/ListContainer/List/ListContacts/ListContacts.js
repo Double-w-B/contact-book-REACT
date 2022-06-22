@@ -12,18 +12,21 @@ import FilteredContacts from "./FilteredContacts";
 
 const ListContacts = () => {
   const dispatch = useDispatch();
-
   const { contacts, selectedContactsID, searchingContact } = useSelector(
     (store) => store.contacts
   );
 
   const handleClick = (e, id) => {
-    const icon = e.currentTarget.firstChild;
-    if (!icon.classList.contains("checked")) {
-      icon.classList.add("checked");
+    const img = e.currentTarget.firstChild;
+
+    if (!img.classList.contains("checked")) {
+      img.nextElementSibling.classList.add("hide");
+      img.classList.add("checked");
+
       dispatch(contactsModule.addSelectedContactID(id));
     } else {
-      icon.classList.remove("checked");
+      img.classList.remove("checked");
+      img.nextElementSibling.classList.remove("hide");
       const filteredSelectedContacts = selectedContactsID.filter(
         (contactID) => contactID !== id
       );
@@ -31,6 +34,17 @@ const ListContacts = () => {
         contactsModule.refreshSelectedContactsID(filteredSelectedContacts)
       );
     }
+  };
+
+  const handleMouseOver = (e) => {
+    const img = e.currentTarget;
+    if (!img.children[0].classList.contains("checked")) {
+      img.children[1].classList.remove("hide");
+    }
+  };
+
+  const handleMouseLeave = (e) => {
+    e.currentTarget.children[1].classList.add("hide");
   };
 
   if (contacts.length < 1) {
@@ -68,6 +82,8 @@ const ListContacts = () => {
                           <div
                             className="contact-img no-select"
                             onClick={(e) => handleClick(e, phone)}
+                            onMouseOver={(e) => handleMouseOver(e, phone)}
+                            onMouseLeave={(e) => handleMouseLeave(e, phone)}
                           >
                             <i
                               className={
@@ -78,6 +94,7 @@ const ListContacts = () => {
                                   : "fas fa-check"
                               }
                             ></i>
+                            <i className="fas fa-check hover hide"></i>
                             {name.slice(0, 1)}
                             {surname.slice(0, 1)}
                           </div>
@@ -296,7 +313,14 @@ const StyledLiContact = styled.li`
       right: 0;
       opacity: 0;
       transition: all 0.1s linear;
-
+      &.hover {
+        color: var(--blue-primary);
+        background-color: var(--white-secondary);
+        opacity: 1;
+        &.hide {
+          opacity: 0;
+        }
+      }
       &.checked {
         opacity: 1;
       }

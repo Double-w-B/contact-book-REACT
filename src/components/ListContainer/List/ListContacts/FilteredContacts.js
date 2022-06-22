@@ -5,11 +5,18 @@ import { useDispatch, useSelector } from "react-redux";
 import SubmenuBtns from "./SubmenuBtns";
 import ContactsInfo from "./ContactsInfo";
 import { setFilteredContactsAmount } from "../../../../features/contacts/contactsSlice";
+import { setFilteredContacts } from "../../../../features/contacts/contactsSlice";
+import { refreshSelectedContactsID } from "../../../../features/contacts/contactsSlice";
+import * as contactsModule from "../../../../features/contacts/contactsSlice";
 
 const FilteredContacts = () => {
   const dispatch = useDispatch();
 
-  const { contacts, searchingContact } = useSelector((store) => store.contacts);
+  const {
+    contacts,
+    searchingContact,
+    selectedContactsID,
+  } = useSelector((store) => store.contacts);
 
   const findMatches = (wordToMatch, contactsData) => {
     return contactsData.filter((person) => {
@@ -25,9 +32,47 @@ const FilteredContacts = () => {
   const filteredContacts = findMatches(searchingContact, contacts).sort(
     (a, b) => a.name > b.name
   );
+
+  const handleClick = (e, id) => {
+    const img = e.currentTarget.firstChild;
+
+    if (!img.classList.contains("checked")) {
+      img.nextElementSibling.classList.add("hide");
+      img.classList.add("checked");
+
+      dispatch(contactsModule.addSelectedContactID(id));
+    } else {
+      img.classList.remove("checked");
+      img.nextElementSibling.classList.remove("hide");
+      const filteredSelectedContacts = selectedContactsID.filter(
+        (contactID) => contactID !== id
+      );
+      dispatch(
+        contactsModule.refreshSelectedContactsID(filteredSelectedContacts)
+      );
+    }
+  };
+
+  const handleMouseOver = (e) => {
+    const img = e.currentTarget;
+    if (!img.children[0].classList.contains("checked")) {
+      img.children[1].classList.remove("hide");
+    }
+  };
+
+  const handleMouseLeave = (e) => {
+    e.currentTarget.children[1].classList.add("hide");
+  };
+
   React.useEffect(() => {
     dispatch(setFilteredContactsAmount(filteredContacts.length));
   });
+
+  React.useEffect(() => {
+    dispatch(refreshSelectedContactsID([]));
+    dispatch(setFilteredContacts(filteredContacts));
+    // eslint-disable-next-line
+  }, [filteredContacts.length]);
 
   if (filteredContacts.length === 0) {
     return (
@@ -50,8 +95,22 @@ const FilteredContacts = () => {
           <StyledLetterContainer key={index}>
             <ul className="contact-list">
               <StyledLiContact id={phone} className="one-child">
-                <div className="contact-img no-select">
-                  <i className="fas fa-check"></i>
+                <div
+                  className="contact-img no-select"
+                  onClick={(e) => handleClick(e, phone)}
+                  onMouseOver={(e) => handleMouseOver(e, phone)}
+                  onMouseLeave={(e) => handleMouseLeave(e, phone)}
+                >
+                  <i
+                    className={
+                      selectedContactsID.find(
+                        (contactID) => contactID === phone
+                      )
+                        ? "fas fa-check checked"
+                        : "fas fa-check"
+                    }
+                  ></i>
+                  <i className="fas fa-check hover hide"></i>
                   {name.slice(0, 1)}
                   {surname.slice(0, 1)}
                 </div>
@@ -291,6 +350,14 @@ const StyledLiContact = styled.li`
       right: 0;
       opacity: 0;
       transition: all 0.1s linear;
+      &.hover {
+        color: var(--blue-primary);
+        background-color: var(--white-secondary);
+        opacity: 1;
+        &.hide {
+          opacity: 0;
+        }
+      }
 
       &.checked {
         opacity: 1;
