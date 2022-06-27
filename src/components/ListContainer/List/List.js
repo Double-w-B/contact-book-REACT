@@ -17,7 +17,7 @@ const List = (props) => {
 
   useEffect(() => {
     const listElement = props.listEl.current;
-    
+
     listElement.addEventListener("scroll", scrollbarThumb);
     return () => listElement.removeEventListener("scroll", scrollbarThumb);
   });
@@ -32,7 +32,7 @@ const List = (props) => {
   };
 
   return (
-    <StyledContainer ref={props.listEl} className={isMove ? "move" : undefined}>
+    <StyledContainer ref={props.listEl} className={isMove && "move" }>
       <div className="list__top-opacity"></div>
       <div className="list__content">
         <ul
@@ -40,7 +40,7 @@ const List = (props) => {
           onMouseOver={helpersModule.handleMouseOverList}
           onClick={(e) => handleClick(e)}
         >
-          <ListContacts />
+          <ListContacts listEl={props.listEl} />
         </ul>
         <ListContactsAmount />
         <div className="list__bottom-opacity"></div>
@@ -67,16 +67,16 @@ const StyledContainer = styled.section`
     width: 4px;
   }
 
-  &::-webkit-scrollbar-track {
+  &::-webkit-scrollbar-track:hover {
     background-color: var(--grey-light-2);
   }
 
-  &::-webkit-scrollbar-thumb {
+  &::-webkit-scrollbar-thumb:hover {
     height: 30px;
     background-color: var(--grey-light-2);
   }
 
-  &::-webkit-scrollbar-thumb {
+  &::-webkit-scrollbar-thumb:hover {
     background-color: var(--blue-primary);
   }
 

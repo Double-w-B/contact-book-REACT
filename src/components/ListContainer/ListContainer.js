@@ -24,7 +24,7 @@ const ListContainer = () => {
 
   return (
     <StyledContainer>
-      <List listEl={listEl} />
+        <List listEl={listEl} />
       <LettersContainer handleLetterClick={handleLetterClick} />
       <Menu />
     </StyledContainer>

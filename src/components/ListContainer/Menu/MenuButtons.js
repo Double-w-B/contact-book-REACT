@@ -13,10 +13,13 @@ const MenuButtons = () => {
   );
 
   const handleSelectAllBtn = () => {
-    const filteredContactsIDs = filteredContactsList.map(
-      (contact) => contact.phone
-    );
+    console.log(filteredContactsList);
+    const filteredContactsIDs = filteredContactsList
+      ? filteredContactsList.map((contact) => contact.phone)
+      : null;
+
     const allIDs = contacts.map((contact) => contact.phone);
+
     filteredContactsList
       ? dispatch(refreshSelectedContactsID(filteredContactsIDs))
       : dispatch(refreshSelectedContactsID(allIDs));
@@ -33,6 +36,9 @@ const MenuButtons = () => {
       dispatch(handleMenuBtn(false));
     }
   };
+  const handleChangeThemeBtn = () => {
+    dispatch(handleMenuBtn(false));
+  };
 
   return (
     <>
@@ -45,10 +51,7 @@ const MenuButtons = () => {
       <Button className="menu__btn--remove" onClick={handleRemoveBtn}>
         Remove Selected
       </Button>
-      <Button
-        className="menu__btn--mode"
-        onClick={() => dispatch(handleMenuBtn(false))}
-      >
+      <Button className="menu__btn--mode" onClick={handleChangeThemeBtn}>
         Change theme
       </Button>
     </>

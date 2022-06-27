@@ -10,7 +10,7 @@ import ContactsInfo from "./ContactsInfo";
 import * as contactsModule from "../../../../features/contacts/contactsSlice";
 import FilteredContacts from "./FilteredContacts";
 
-const ListContacts = () => {
+const ListContacts = (props) => {
   const dispatch = useDispatch();
   const { contacts, selectedContactsID, searchingContact } = useSelector(
     (store) => store.contacts
@@ -52,7 +52,7 @@ const ListContacts = () => {
   }
 
   if (contacts.length > 1 && searchingContact) {
-    return <FilteredContacts />;
+    return <FilteredContacts listEl={props.listEl} />;
   }
 
   return (

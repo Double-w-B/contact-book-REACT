@@ -9,14 +9,16 @@ import { setFilteredContacts } from "../../../../features/contacts/contactsSlice
 import { refreshSelectedContactsID } from "../../../../features/contacts/contactsSlice";
 import * as contactsModule from "../../../../features/contacts/contactsSlice";
 
-const FilteredContacts = () => {
+const FilteredContacts = (props) => {
   const dispatch = useDispatch();
 
-  const {
-    contacts,
-    searchingContact,
-    selectedContactsID,
-  } = useSelector((store) => store.contacts);
+  const { contacts, searchingContact, selectedContactsID } = useSelector(
+    (store) => store.contacts
+  );
+
+  React.useEffect(() => {
+    props.listEl.current.scrollTo(0, 0);
+  }, [props.listEl]);
 
   const findMatches = (wordToMatch, contactsData) => {
     return contactsData.filter((person) => {

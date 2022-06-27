@@ -4,11 +4,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { hideActiveSubmenu } from "../../helpers/helpers";
 import { handleMenuBtn } from "../../features/menu/menuSlice";
 import * as modalModule from "../../features/modal/modalSlice";
-import { handleSearchingContact } from "../../features/contacts/contactsSlice";
+import * as contactsSliceModule from "../../features/contacts/contactsSlice";
 
 const NavbarButtons = () => {
   const dispatch = useDispatch();
   const { isMenuOpen } = useSelector((store) => store.menu);
+
+  const handleMenuBtnClick = () => {
+    dispatch(handleMenuBtn(!isMenuOpen));
+    hideActiveSubmenu();
+  };
 
   const handleAddNewContactBtn = () => {
     dispatch(modalModule.handleModalOverlay(true));
@@ -17,9 +22,11 @@ const NavbarButtons = () => {
     dispatch(modalModule.showAddContactModal(true));
   };
 
-  const handleMenuBtnClick = () => {
-    dispatch(handleMenuBtn(!isMenuOpen));
-    hideActiveSubmenu();
+  const handleContactsListBtn = () => {
+    dispatch(contactsSliceModule.handleSearchingContact(""));
+    dispatch(contactsSliceModule.setFilteredContacts(""));
+    dispatch(contactsSliceModule.refreshSelectedContactsID([]));
+    document.querySelector(".list__content").parentElement.scrollTo(0, 0);
   };
 
   return (
@@ -34,7 +41,7 @@ const NavbarButtons = () => {
       </Button>
       <Button
         className="nav__btn--show no-select"
-        onClick={() => dispatch(handleSearchingContact(""))}
+        onClick={handleContactsListBtn}
       >
         <i className="fas fa-address-book"></i>
         <p>List</p>
