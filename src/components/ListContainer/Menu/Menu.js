@@ -5,9 +5,14 @@ import { useSelector } from "react-redux";
 
 const Menu = () => {
   const { isMenuOpen } = useSelector((store) => store.menu);
+  const { darkMode } = useSelector((store) => store.themeMode);
 
   return (
-    <StyledContainer className={isMenuOpen ? "show-menu" : undefined}>
+    <StyledContainer
+      className={
+        isMenuOpen ? (darkMode ? "show-menu dark-mode" : "show-menu") : ""
+      }
+    >
       <MenuButtons />
     </StyledContainer>
   );
@@ -32,6 +37,16 @@ const StyledContainer = styled.section`
     inset -7px 0 1px -7px rgba(0, 0, 0, 0.4),
     inset 0 -7px 1px -7px rgba(0, 0, 0, 0.4);
   position: absolute;
+
+  &.dark-mode {
+    background-color: var(--dark-mode-secondary);
+    button {
+      color: var(--grey-light-2);
+      &:hover {
+        color: var(--dark-mode-clr);
+      }
+    }
+  }
 
   &.show-menu {
     opacity: 1;

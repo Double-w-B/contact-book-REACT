@@ -16,7 +16,7 @@ const ModalOverlay = () => {
   } = useSelector((store) => store.modal);
 
   return (
-    <StyledContainer className={isModalOverlayOpen ? "open-modal" : undefined}>
+    <StyledContainer className={isModalOverlayOpen ? "open-modal" : ""}>
       {(isShowAddContactModal || isShowEditContactModal) && <AddContact />}
       {(isDeleteContactModal || isDeleteSelectedContactsModal) && (
         <RemoveContact />

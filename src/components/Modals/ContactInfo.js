@@ -11,9 +11,9 @@ const ContactInfo = () => {
   const { name, surname, mail, address, notes, phone } = contacts.find(
     (contact) => contact.phone === selectedContactId
   );
-
+  const { darkMode } = useSelector((store) => store.themeMode);
   return (
-    <StyledContainer>
+    <StyledContainer className={darkMode ? "dark-mode" : ""}>
       <div className="btn-container">
         <i
           className="fas fa-times"
@@ -69,6 +69,43 @@ const StyledContainer = styled.article`
   transition: cubic-bezier(0.17, 0.67, 0.83, 0.67);
   box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px,
     rgba(0, 0, 0, 0.22) 0px 15px 12px, inset 0 0 1px #48484a;
+
+  &.dark-mode {
+    background-color: var(--dark-mode-2);
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px,
+      rgba(0, 0, 0, 0.22) 0px 15px 12px, inset 0 0 1px #1a1d24;
+
+    .top-info {
+      .photo .img {
+        background-color: var(--dark-mode-clr);
+        color: var(--white-primary);
+        box-shadow: none;
+      }
+      .main-info p {
+        color: var(--white-primary);
+        &:last-child {
+          color: var(--grey-light);
+        }
+      }
+    }
+
+    .bottom-info {
+      p {
+        color: var(--white-primary);
+      }
+      .fas,
+      .far {
+        color: var(--dark-mode-clr);
+      }
+    }
+
+    .btn-container .fas {
+      color: var(--white-primary);
+      &:hover {
+        color: var(--dark-mode-clr);
+      }
+    }
+  }
 
   .btn-container {
     width: 3rem;

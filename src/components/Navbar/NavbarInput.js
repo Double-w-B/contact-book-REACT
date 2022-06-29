@@ -4,14 +4,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { handleSearchingContact } from "../../features/contacts/contactsSlice";
 
 const NavbarInput = () => {
+  const { darkMode } = useSelector((store) => store.themeMode);
   const dispatch = useDispatch();
   const { searchingContact } = useSelector((store) => store.contacts);
 
   return (
-    <InputContainer className="input__container">
+    <InputContainer>
       <input
         type="text"
         id="search"
+        className={darkMode ? "dark-mode" : ""}
         value={searchingContact}
         onChange={(e) => dispatch(handleSearchingContact(e.target.value))}
         placeholder="Name, surname, number ..."
@@ -20,7 +22,9 @@ const NavbarInput = () => {
         autoComplete="off"
       />
       <div className="input__search-icon">
-        <i className="fas fa-search"></i>
+        <i
+          className={darkMode ? "fas fa-search dark-mode" : "fas fa-search"}
+        ></i>
       </div>
     </InputContainer>
   );
@@ -49,11 +53,21 @@ const InputContainer = styled.div`
     box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px,
       rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
 
-    :hover::placeholder {
+    &.dark-mode {
+      color: var(--grey-light);
+      background-color: var(--dark-mode-2);
+      border: 1px solid var(--grey-semi-dark);
+
+      &::placeholder {
+        color: var(--grey-light);
+      }
+    }
+
+    &:hover::placeholder {
       opacity: 0.25;
     }
 
-    ::placeholder {
+    &::placeholder {
       color: var(--grey-dark-secondary);
       opacity: 0.2;
       font-size: 1rem;
@@ -75,7 +89,11 @@ const InputContainer = styled.div`
     right: 1rem;
     top: 1.15rem;
     color: var(--grey-dark-secondary);
-    opacity: 0.1;
+    opacity: 0.15;
+
+    &.dark-mode {
+      color: var(--grey-light);
+    }
   }
 `;
 

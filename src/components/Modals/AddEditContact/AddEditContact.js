@@ -25,6 +25,7 @@ const AddEditContact = () => {
   const notesInput = useRef(null);
 
   const dispatch = useDispatch();
+  const { darkMode } = useSelector((store) => store.themeMode);
 
   const { isShowAddContactModal, isShowEditContactModal, selectedContactId } =
     useSelector((store) => store.modal);
@@ -43,6 +44,7 @@ const AddEditContact = () => {
       setAddress(foundContact.address);
       setNotes(foundContact.notes);
     }
+    // eslint-disable-next-line
   }, []);
 
   const handleAddBtn = (modalName) => {
@@ -130,7 +132,7 @@ const AddEditContact = () => {
   };
 
   return (
-    <StyledContainer>
+    <StyledContainer className={darkMode ? "dark-mode" : ""}>
       <div className="new-con-main-info">
         <div className="info">
           {isShowAddContactModal ? "New Contact" : "Edit Contact"}
@@ -194,6 +196,26 @@ const StyledContainer = styled.div`
   box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px,
     rgba(0, 0, 0, 0.22) 0px 15px 12px, inset 0 0 1px #141e30;
   transition: cubic-bezier(0.17, 0.67, 0.83, 0.67);
+
+  &.dark-mode {
+    background-color: var(--dark-mode-2);
+    color: var(--white-primary);
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px,
+      rgba(0, 0, 0, 0.22) 0px 15px 12px, inset 0 0 1px #1a1d24;
+
+    .new-con-main-info .info {
+      color: var(--dark-mode-clr);
+      text-shadow: none;
+    }
+
+    form input {
+      color: var(--white-primary);
+      border-bottom: 0.15rem solid var(--grey-light);
+      &::placeholder {
+        color: var(--white-primary);
+      }
+    }
+  }
 
   &.open-modal {
     visibility: visible;

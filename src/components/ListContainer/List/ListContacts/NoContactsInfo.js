@@ -1,9 +1,12 @@
 import React from "react";
 import styled from "styled-components";
+import { useSelector } from "react-redux";
 
 const NoContactsInfo = () => {
+  const { darkMode } = useSelector((store) => store.themeMode);
+
   return (
-    <StyledImgInfo>
+    <StyledImgInfo className={darkMode ? "dark-mode" : ""}>
       <div className="info-img no-select">
         <i className="fas fa-user-plus"></i>
       </div>
@@ -16,6 +19,15 @@ const StyledImgInfo = styled.div`
   width: 100%;
   height: 25rem;
   color: var(--white-primary);
+
+  &.dark-mode {
+    .info-img {
+      color: var(--white-secondary);
+    }
+    .info-text {
+      color: var(--white-secondary);
+    }
+  }
 
   .info-img {
     width: 100%;

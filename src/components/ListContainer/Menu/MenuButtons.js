@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { refreshSelectedContactsID } from "../../../features/contacts/contactsSlice";
 import * as modalModule from "../../../features/modal/modalSlice";
 import { handleMenuBtn } from "../../../features/menu/menuSlice";
+import { changeThemeMode } from "../../../features/themeMode/themeModeSlice";
 
 const MenuButtons = () => {
   const dispatch = useDispatch();
@@ -11,6 +12,7 @@ const MenuButtons = () => {
   const { contacts, selectedContactsID, filteredContactsList } = useSelector(
     (store) => store.contacts
   );
+  const { darkMode } = useSelector((store) => store.themeMode);
 
   const handleSelectAllBtn = () => {
     console.log(filteredContactsList);
@@ -38,6 +40,10 @@ const MenuButtons = () => {
   };
   const handleChangeThemeBtn = () => {
     dispatch(handleMenuBtn(false));
+    dispatch(changeThemeMode());
+    darkMode
+      ? document.body.classList.remove("dark-mode")
+      : document.body.classList.add("dark-mode");
   };
 
   return (

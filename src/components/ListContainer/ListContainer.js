@@ -10,7 +10,7 @@ const ListContainer = () => {
   const handleLetterClick = (e) => {
     e.preventDefault();
     const id = e.target.getAttribute("href").slice(1);
-    
+
     if (document.getElementById(id) === null) return;
 
     const element = document.getElementById(id);
@@ -24,7 +24,7 @@ const ListContainer = () => {
 
   return (
     <StyledContainer>
-        <List listEl={listEl} />
+      <List listEl={listEl} />
       <LettersContainer handleLetterClick={handleLetterClick} />
       <Menu />
     </StyledContainer>

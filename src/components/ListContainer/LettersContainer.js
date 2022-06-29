@@ -6,6 +6,7 @@ import { uniqueFilteredLetters } from "../../helpers/helpers";
 
 const LettersContainer = (props) => {
   const { contacts } = useSelector((store) => store.contacts);
+  const { darkMode } = useSelector((store) => store.themeMode);
 
   const letters = alphabet.map((letter) => {
     if (uniqueFilteredLetters(contacts).includes(letter)) {
@@ -26,7 +27,7 @@ const LettersContainer = (props) => {
   });
 
   return (
-    <StyledContainer>
+    <StyledContainer className={darkMode ? "dark-mode" : ""}>
       {letters}
       <div className="free-space"></div>
     </StyledContainer>
@@ -43,6 +44,18 @@ const StyledContainer = styled.section`
   border-bottom-right-radius: 0.5rem;
   box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 8px;
 
+  &.dark-mode {
+    background-color: var(--dark-mode-2);
+    .letters__letter,
+    .no-name {
+      background-color: var(--dark-mode-2);
+
+      a {
+        color: var(--white-secondary);
+      }
+    }
+  }
+
   .letters__letter,
   .no-name {
     width: 100%;
@@ -55,12 +68,14 @@ const StyledContainer = styled.section`
 
     a {
       text-decoration: none;
-      color: var(--grey-semi-dark);
       color: var(--blue-primary);
       font-weight: 500;
       transition: all 0.1s linear;
       text-transform: capitalize;
       font-family: inherit;
+      &:hover {
+        transform: scale(1.1);
+      }
     }
   }
 

@@ -4,11 +4,12 @@ import ListContacts from "./ListContacts/ListContacts";
 import ListContactsAmount from "./ListContactsAmount";
 import * as helpersModule from "../../../helpers/helpers";
 import { handleMenuBtn } from "../../../features/menu/menuSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const List = (props) => {
   const dispatch = useDispatch();
   const [isMove, setIsMove] = useState(false);
+  const { darkMode } = useSelector((store) => store.themeMode);
 
   const scrollbarThumb = () => {
     setIsMove(true);
@@ -30,10 +31,20 @@ const List = (props) => {
     helpersModule.handleClickOnList(e);
     dispatch(handleMenuBtn(false));
   };
+  const listClassName = () => {
+    if (darkMode && isMove) return "move dark-mode";
+    else if (darkMode) return "dark-mode";
+    else if (isMove) return "move";
+    else return "";
+  };
 
   return (
-    <StyledContainer ref={props.listEl} className={isMove && "move" }>
-      <div className="list__top-opacity"></div>
+    <StyledContainer ref={props.listEl} className={listClassName()}>
+      <div
+        className={
+          darkMode ? "list__top-opacity dark-mode" : "list__top-opacity"
+        }
+      ></div>
       <div className="list__content">
         <ul
           className="list__contacts"
@@ -43,7 +54,11 @@ const List = (props) => {
           <ListContacts listEl={props.listEl} />
         </ul>
         <ListContactsAmount />
-        <div className="list__bottom-opacity"></div>
+        <div
+          className={
+            darkMode ? "list__bottom-opacity dark-mode" : "list__bottom-opacity"
+          }
+        ></div>
       </div>
     </StyledContainer>
   );
@@ -62,6 +77,27 @@ const StyledContainer = styled.section`
   justify-content: space-between;
   border-bottom-left-radius: 0.5rem;
   background-color: var(--grey-light-2);
+
+  &.dark-mode {
+    background-color: var(--dark-mode-1);
+    scrollbar-color: var(--dark-mode-1) var(--dark-mode-1);
+
+    &::-webkit-scrollbar-track {
+      background-color: var(--dark-mode-1);
+    }
+    &::-webkit-scrollbar-track:hover {
+      background-color: var(--dark-mode-1);
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: var(--dark-mode-1);
+    }
+    &::-webkit-scrollbar-thumb:hover {
+      background-color: var(--dark-mode-clr);
+    }
+    &.move::-webkit-scrollbar-thumb {
+      background-color: var(--dark-mode-clr);
+    }
+  }
 
   &::-webkit-scrollbar {
     width: 4px;
@@ -82,6 +118,10 @@ const StyledContainer = styled.section`
 
   &.move {
     scrollbar-color: var(--blue-primary) var(--grey-light-2);
+    &.dark-mode {
+      background-color: var(--dark-mode-1);
+      scrollbar-color: var(--dark-mode-clr) var(--dark-mode-1);
+    }
   }
 
   &.move::-webkit-scrollbar-thumb {
@@ -107,9 +147,17 @@ const StyledContainer = styled.section`
     top: 0;
     z-index: 1;
   }
+  .list__top-opacity.dark-mode {
+    background: linear-gradient(var(--dark-mode-1) 25%, transparent);
+  }
+
   .list__bottom-opacity {
     background: linear-gradient(transparent, var(--grey-light-2) 55%);
     bottom: -0.05rem;
+
+    &.dark-mode {
+      background: linear-gradient(transparent, var(--dark-mode-1) 75%);
+    }
   }
 
   .list__content {

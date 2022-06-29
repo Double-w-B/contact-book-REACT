@@ -6,10 +6,19 @@ const ListContactsAmount = () => {
   const { contacts, searchingContact, filteredContactsAmount } = useSelector(
     (store) => store.contacts
   );
-
+  const { darkMode } = useSelector((store) => store.themeMode);
   return (
-    <StyledContactsAmount className="no-select">
-      <p>Contacts: {searchingContact? filteredContactsAmount : contacts.length}</p>
+    <StyledContactsAmount
+      className={darkMode ? "dark-mode no-select" : "no-select"}
+    >
+      <p>
+        Contacts:{" "}
+        {searchingContact
+          ? filteredContactsAmount > 0
+            ? filteredContactsAmount
+            : 0
+          : contacts.length}
+      </p>
     </StyledContactsAmount>
   );
 };
@@ -19,6 +28,10 @@ const StyledContactsAmount = styled.section`
   display: flex;
   justify-content: center;
   margin-top: auto;
+
+  &.dark-mode {
+    color: var(--white-secondary);
+  }
 
   p {
     margin: 0.5rem;

@@ -6,7 +6,7 @@ import * as contactsModule from "../../features/contacts/contactsSlice";
 
 const RemoveContact = () => {
   const dispatch = useDispatch();
-
+  const { darkMode } = useSelector((store) => store.themeMode);
   const {
     selectedContactId,
     isDeleteSelectedContactsModal,
@@ -57,7 +57,7 @@ const RemoveContact = () => {
   };
 
   return (
-    <StyledContainer>
+    <StyledContainer className={darkMode ? "dark-mode" : ""}>
       <div className="confirm-container  no-select">
         <div className="confirm-question">
           <p>
@@ -101,6 +101,18 @@ const StyledContainer = styled.div`
   color: var(--grey-dark-secondary);
   box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px,
     rgba(0, 0, 0, 0.22) 0px 15px 12px, inset 0 0 1px #141e30;
+
+  &.dark-mode {
+    background-color: var(--dark-mode-2);
+    color: var(--white-primary);
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px,
+      rgba(0, 0, 0, 0.22) 0px 15px 12px, inset 0 0 1px #1a1d24;
+
+    .confirm-container .confirm-question .selected-contact {
+      color: var(--dark-mode-clr);
+      text-shadow: none;
+    }
+  }
 
   .confirm-container {
     width: 100%;

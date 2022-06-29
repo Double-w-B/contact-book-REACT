@@ -15,6 +15,7 @@ const FilteredContacts = (props) => {
   const { contacts, searchingContact, selectedContactsID } = useSelector(
     (store) => store.contacts
   );
+  const { darkMode } = useSelector((store) => store.themeMode);
 
   React.useEffect(() => {
     props.listEl.current.scrollTo(0, 0);
@@ -78,11 +79,15 @@ const FilteredContacts = (props) => {
 
   if (filteredContacts.length === 0) {
     return (
-      <StyledZeroResultsContainer>
-        <div className="info-img no-select">
+      <StyledZeroResultsContainer className={darkMode ? "dark-mode" : ""}>
+        <div className="info-img  no-select">
           <i className="fas fa-search"></i>
         </div>
-        <div className="info-text no-select">
+        <div
+          className={
+            darkMode ? "info-text dark-mode no-select" : "info-text no-select"
+          }
+        >
           It looks like there aren't any matches for your search
         </div>
       </StyledZeroResultsContainer>
@@ -96,9 +101,16 @@ const FilteredContacts = (props) => {
         return (
           <StyledLetterContainer key={index}>
             <ul className="contact-list">
-              <StyledLiContact id={phone} className="one-child">
+              <StyledLiContact
+                id={phone}
+                className={darkMode ? "dark-mode" : ""}
+              >
                 <div
-                  className="contact-img no-select"
+                  className={
+                    darkMode
+                      ? "contact-img dark-mode no-select"
+                      : "contact-img no-select"
+                  }
                   onClick={(e) => handleClick(e, phone)}
                   onMouseOver={(e) => handleMouseOver(e, phone)}
                   onMouseLeave={(e) => handleMouseLeave(e, phone)}
@@ -108,15 +120,23 @@ const FilteredContacts = (props) => {
                       selectedContactsID.find(
                         (contactID) => contactID === phone
                       )
-                        ? "fas fa-check checked"
+                        ? darkMode
+                          ? "fas fa-check dark-mode checked"
+                          : "fas fa-check checked"
                         : "fas fa-check"
                     }
                   ></i>
-                  <i className="fas fa-check hover hide"></i>
+                  <i
+                    className={
+                      darkMode
+                        ? "fas fa-check hover dark-mode hide"
+                        : "fas fa-check hover hide"
+                    }
+                  ></i>
                   {name.slice(0, 1)}
                   {surname.slice(0, 1)}
                 </div>
-                <div className="contact">
+                <div className={darkMode ? "contact dark-mode" : "contact"}>
                   <ContactsInfo
                     contactID={phone}
                     name={name}
@@ -124,9 +144,13 @@ const FilteredContacts = (props) => {
                   />
                 </div>
                 <div className="submenu-icon">
-                  <img src={arrowIcon} alt="icon" />
+                  <img
+                    src={arrowIcon}
+                    alt="icon"
+                    className={darkMode ? "dark-mode" : ""}
+                  />
                 </div>
-                <div className="submenu">
+                <div className={darkMode ? "submenu dark-mode" : "submenu"}>
                   <SubmenuBtns contactID={phone} email={mail} />
                 </div>
               </StyledLiContact>
@@ -142,6 +166,15 @@ const StyledZeroResultsContainer = styled.div`
   width: 100%;
   height: 25rem;
   color: var(--white-primary);
+
+  &.dark-mode {
+    .info-img {
+      color: var(--white-secondary);
+    }
+    .info-text {
+      color: var(--white-secondary);
+    }
+  }
 
   .info-img {
     width: 100%;
@@ -170,26 +203,6 @@ const StyledZeroResultsContainer = styled.div`
 `;
 
 const StyledLetterContainer = styled.li`
-  .first-letter {
-    width: 100%;
-    height: 1.6rem;
-    background-color: var(--grey-semi-light);
-    color: var(--white-primary);
-    color: var(--blue-primary);
-    display: flex;
-    align-items: center;
-    justify-content: start;
-    border-radius: 2rem;
-    font-size: 1.3rem;
-    text-transform: uppercase;
-  }
-
-  .first-letter p {
-    margin: 0;
-    padding: 0;
-    margin-left: 0.8rem;
-  }
-
   .contact-list {
     margin: 0.5rem 0 0.5rem 0;
     padding-left: 0;
@@ -236,6 +249,15 @@ const StyledLetterContainer = styled.li`
             brightness(85%) contrast(91%);
           transition: all 0.2s ease-in;
 
+          &.dark-mode {
+            filter: invert(14%) sepia(1%) saturate(2297%) hue-rotate(235deg)
+              brightness(97%) contrast(94%);
+            &.active {
+              filter: invert(50%) sepia(97%) saturate(1486%) hue-rotate(205deg)
+                brightness(90%) contrast(98%);
+            }
+          }
+
           &.active {
             transform: rotate(90deg) scale(0.8);
             filter: invert(55%) sepia(100%) saturate(7471%) hue-rotate(190deg)
@@ -261,6 +283,16 @@ const StyledLetterContainer = styled.li`
       box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
         rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
       opacity: 0;
+
+      &.dark-mode {
+        background-color: var(--dark-mode-4);
+        button {
+          color: var(--grey-light);
+          &:hover {
+            color: var(--dark-mode-clr);
+          }
+        }
+      }
 
       &.show {
         bottom: -1.38rem;
@@ -303,19 +335,21 @@ const StyledLiContact = styled.li`
   width: 96%;
   height: 3.1rem;
   list-style: none;
-
   font-size: 1.3rem;
   margin-bottom: 0.5rem;
   margin-left: 0.8rem;
   transition: all 0.3s linear;
   display: flex;
   align-items: center;
-
   background-color: #dbe4ee3d;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
     rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
   border-radius: 0;
   position: relative;
+
+  &.dark-mode {
+    background-color: var(--dark-mode-4);
+  }
 
   .contact-img {
     width: 35px;
@@ -336,6 +370,11 @@ const StyledLiContact = styled.li`
     cursor: pointer;
     box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 8px;
 
+    &.dark-mode {
+      background-color: var(--dark-mode-clr);
+      color: var(--white-secondary);
+    }
+
     .fa-check {
       position: absolute;
       background-color: var(--blue-primary);
@@ -352,10 +391,22 @@ const StyledLiContact = styled.li`
       right: 0;
       opacity: 0;
       transition: all 0.1s linear;
+
+      &.dark-mode {
+        color: var(--dark-mode-clr);
+        background-color: var(--white-secondary);
+      }
+
       &.hover {
         color: var(--blue-primary);
         background-color: var(--white-secondary);
         opacity: 1;
+
+        &.dark-mode {
+          background-color: var(--dark-mode-clr);
+          color: var(--white-secondary);
+        }
+
         &.hide {
           opacity: 0;
         }
@@ -374,6 +425,19 @@ const StyledLiContact = styled.li`
     text-transform: capitalize;
     font-size: 1.2rem;
     color: var(--dark-mode-primary);
+
+    &.dark-mode {
+      color: var(--white-secondary);
+
+      p {
+        &:first-child:hover {
+          color: var(--dark-mode-clr);
+        }
+        &:nth-child(2) {
+          color: var(--grey-light-2);
+        }
+      }
+    }
 
     p {
       &:first-child {

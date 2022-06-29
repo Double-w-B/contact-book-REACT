@@ -1,9 +1,12 @@
 import React from "react";
 import styled from "styled-components";
+import { useSelector } from "react-redux";
 
 const Footer = () => {
+  const { darkMode } = useSelector((store) => store.themeMode);
+
   return (
-    <Wrapper>
+    <Wrapper className={darkMode ? "dark-mode" : ""}>
       <p>
         &copy; {new Date().getFullYear()} All Rights Reserved. made by{" "}
         <a
@@ -28,6 +31,13 @@ const Wrapper = styled.footer`
   display: flex;
   align-items: center;
   justify-content: center;
+
+  &.dark-mode {
+    color: var(--white-secondary);
+    a {
+      color: var(--dark-mode-clr);
+    }
+  }
 
   a {
     text-decoration: none;
