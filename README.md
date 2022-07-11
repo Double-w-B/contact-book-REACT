@@ -13,7 +13,7 @@
 ## General info
 An app where the user stores entries called contacts. Each contact entry consists of a few standard fields (first name, last name, phone number, e-mail address, address and notes). A list of contacts is stored in alphabetical order of contact's names. Functionality of the app enables user to find a contact via a search of their name or phone number. Furthermore, enables to modify the data or to remove the contacts. As an extra feature, on purpose to reduce the luminance emitted by device screens, there is an option of a dark mode.
 
-Technology: <HTML + CSS + JavaScript + RWD>
+Technology: <HTML + CSS + RWD + React.js + Redux>
 
 ## Add a new contact
 To add a new contact, user has to click a button "Add New" and fulfill required form fields marked with an asterisk. A new contact will be added to the list of contacts after passing the form validation.
