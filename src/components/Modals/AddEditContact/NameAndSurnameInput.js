@@ -19,10 +19,12 @@ const NameAndSurnameInput = (props) => {
               ? setName(e.target.value)
               : setSurname(e.target.value)
           }
-          onFocus={(e) => (e.target.placeholder = "")}
-          onBlur={(e) => (e.target.placeholder = input.placeholder)}
           required
         />
+        <label>
+          {input.label}
+          <span>*</span>
+        </label>
         <div className="error-hint">invalid {input.name}</div>
         <div className="error-hint-required">{input.name} is required</div>
       </div>

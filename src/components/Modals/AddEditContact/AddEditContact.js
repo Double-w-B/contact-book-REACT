@@ -132,7 +132,10 @@ const AddEditContact = () => {
   };
 
   return (
-    <StyledContainer className={darkMode ? "dark-mode" : ""}>
+    <StyledContainer
+      className={darkMode ? "dark-mode" : ""}
+      darkMode={darkMode}
+    >
       <div className="new-con-main-info">
         <div className="info">
           {isShowAddContactModal ? "New Contact" : "Edit Contact"}
@@ -185,7 +188,7 @@ const AddEditContact = () => {
 const StyledContainer = styled.div`
   border-radius: 0.5rem;
   width: 410px;
-  height: 330px;
+  height: 420px;
   display: flex;
   flex-direction: column;
   position: absolute;
@@ -209,11 +212,8 @@ const StyledContainer = styled.div`
     }
 
     form input {
-      color: var(--white-primary);
-      border-bottom: 0.15rem solid var(--grey-light);
-      &::placeholder {
-        color: var(--white-primary);
-      }
+      color: var(--dark-mode-clr);
+      border-bottom: 0.15rem solid var(--grey-semi-light);
     }
   }
 
@@ -237,8 +237,6 @@ const StyledContainer = styled.div`
     justify-content: center;
     align-items: center;
     color: var(--blue-primary);
-    /* text-shadow: -1px 1px 6px var(--grey-semi-light),
-	-1px -1px 6px var(--grey-semi-light); */
     font-weight: bold;
     letter-spacing: 0.05rem;
     font-size: 1.5rem;
@@ -268,12 +266,15 @@ const StyledContainer = styled.div`
   .phone-input,
   .email-input {
     width: 50%;
-    height: 40%;
-    position: relative;
     display: flex;
     justify-content: center;
     position: relative;
     transition: all 0.1s ease-in;
+  }
+
+  .address-input,
+  .notes-input {
+    position: relative;
   }
 
   .phone-input {
@@ -308,31 +309,60 @@ const StyledContainer = styled.div`
     border-bottom: 0.15rem solid var(--grey-semi-light);
     margin: 0 0.5rem;
     padding-left: 0.2rem;
-    font-family: inherit;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     font-family: inherit;
     text-transform: capitalize;
     background-color: transparent;
-    color: var(--grey-dark);
+    color: var(--blue-primary);
   }
 
-  .name-input input::placeholder,
-  .surname-input input::placeholder,
-  .phone-input input::placeholder,
-  .email-input input::placeholder,
-  .address-input input::placeholder,
-  .notes-input input::placeholder {
-    opacity: 0.4;
-  }
-
-  .phone-input input {
-    width: 100%;
-    text-transform: none;
-  }
-
+  .phone-input input,
   .email-input input {
     width: 100%;
     text-transform: none;
+  }
+
+  .name-input label,
+  .surname-input label,
+  .phone-input label,
+  .email-input label,
+  .address-input label,
+  .notes-input label {
+    font-size: 1.2rem;
+    color: var(--grey-semi-light);
+    position: absolute;
+    left: 1.6rem;
+    bottom: 0.2rem;
+    transition: 0.45s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    pointer-events: none;
+  }
+
+  .phone-input label,
+  .email-input label {
+    left: 0.8rem;
+  }
+
+  form div input:focus,
+  form div input:valid {
+    border-bottom: ${(props) =>
+      props.darkMode
+        ? "0.15rem solid var(--grey-light)"
+        : "0.15rem solid var(--grey-semi-light-2)"};
+  }
+
+  form div input:focus + label,
+  form div input:valid + label {
+    transform: translateY(-30px);
+    font-size: 0.8rem;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    color: ${(props) =>
+      props.darkMode ? "color: var(--white-primary)" : "var(--grey-semi-dark)"};
+  }
+
+  form div input:focus + label span,
+  form div input:valid + label span {
+    color: var(--red-secondary);
   }
 
   .new-con-secondary-info {
@@ -351,7 +381,6 @@ const StyledContainer = styled.div`
   .address-input,
   .notes-input {
     width: 100%;
-    height: 50%;
     display: flex;
     align-items: center;
   }

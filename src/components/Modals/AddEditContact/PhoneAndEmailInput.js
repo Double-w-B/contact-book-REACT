@@ -9,7 +9,7 @@ const PhoneAndEmailInput = (props) => {
       <div className={input.className} key={input.id}>
         <input
           ref={input.name === "phone" ? phoneInput : emailInput}
-          type={input.name === "phone" ? "text" : "email"}
+          type="text"
           id={input.id}
           name={input.name}
           placeholder={input.placeholder}
@@ -20,10 +20,12 @@ const PhoneAndEmailInput = (props) => {
               ? setPhone(e.target.value)
               : setEmail(e.target.value)
           }
-          onFocus={(e) => (e.target.placeholder = "")}
-          onBlur={(e) => (e.target.placeholder = input.placeholder)}
           required
         />
+        <label>
+          {input.label}
+          {input.label !== "Email" && <span>*</span>}
+        </label>
         <div className="error-hint">
           invalid {input.name === "phone" ? "number" : input.name}
         </div>

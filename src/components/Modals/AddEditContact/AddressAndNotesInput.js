@@ -21,9 +21,9 @@ const AddressAndNotesInput = (props) => {
               ? setNotes(e.target.value)
               : setAddress(e.target.value)
           }
-          onFocus={(e) => (e.target.placeholder = "")}
-          onBlur={(e) => (e.target.placeholder = input.placeholder)}
+          required
         />
+        <label>{input.label}</label>
       </div>
     );
   });
