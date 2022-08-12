@@ -250,8 +250,8 @@ const StyledLetterContainer = styled.li`
           transition: all 0.2s ease-in;
 
           &.dark-mode {
-            filter: invert(14%) sepia(1%) saturate(2297%) hue-rotate(235deg)
-              brightness(97%) contrast(94%);
+            filter: invert(40%) sepia(7%) saturate(214%) hue-rotate(177deg)
+              brightness(96%) contrast(82%);
             &.active {
               filter: invert(50%) sepia(97%) saturate(1486%) hue-rotate(205deg)
                 brightness(90%) contrast(98%);
