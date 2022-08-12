@@ -1,41 +1,44 @@
 /* Invalid data validation */
 const invalidItem = (elm) => {
-  elm.current.classList.add("invalid-input");
-  elm.current.nextElementSibling.classList.add("invalid-input");
+  const siblingElement = [...elm.current.parentElement.children].find(
+    (el) => el.className === "error-hint"
+  );
 
-setTimeout(() => {
-    elm.current?.classList.remove("invalid-input");
-    elm.current?.nextElementSibling.classList.remove("invalid-input");
+  elm.current.classList.add("invalid-input");
+  siblingElement.classList.add("invalid-input");
+
+  setTimeout(() => {
+    elm.current.classList.remove("invalid-input");
+    siblingElement.classList.remove("invalid-input");
   }, 1500);
 };
 
 /* Required data validation */
 const requiredInput = (elm) => {
-  elm.current.classList.add("invalid-input");
-  elm.current.nextElementSibling.nextElementSibling.classList.add(
-    "invalid-input"
+  const siblingElement = [...elm.current.parentElement.children].find(
+    (el) => el.className === "error-hint-required"
   );
 
+  elm.current.classList.add("invalid-input");
+  siblingElement.classList.add("invalid-input");
+
   setTimeout(() => {
-    elm.current?.classList.remove("invalid-input");
-    elm.current?.nextElementSibling.nextElementSibling.classList.remove(
-      "invalid-input"
-    );
+    elm.current.classList.remove("invalid-input");
+    siblingElement.classList.remove("invalid-input");
   }, 1500);
 };
 
 /* Same number validation */
 const unavailableNumber = (elm) => {
-  elm.current.classList.add("invalid-input");
-  elm.current.nextElementSibling.nextElementSibling.nextElementSibling.classList.add(
-    "invalid-input"
+  const siblingElement = [...elm.current.parentElement.children].find(
+    (el) => el.className === "error-hint-number"
   );
+  elm.current.classList.add("invalid-input");
+  siblingElement.classList.add("invalid-input");
 
-setTimeout(() => {
-    elm.current?.classList.remove("invalid-input");
-    elm.current?.nextElementSibling.nextElementSibling.nextElementSibling.classList.remove(
-      "invalid-input"
-    );
+  setTimeout(() => {
+    elm.current.classList.remove("invalid-input");
+    siblingElement.classList.remove("invalid-input");
   }, 1500);
 };
 
@@ -54,7 +57,6 @@ export const validationFunction = (
   !inputPhone.current.value && requiredInput(inputPhone);
 
   /* Invalid data validation */
-
   inputName.current.value.match(textRegExp) && invalidItem(inputName);
   inputSurname.current.value.match(textRegExp) && invalidItem(inputSurname);
 
